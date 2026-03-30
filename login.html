@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPark — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --accent:#0077cc;
+  --accent2:#00b4d8;
+  --card-bg:rgba(255,255,255,0.75);
+  --text:#1a2a3a;
+  --muted:#5a7a9a;
+  --border:rgba(0,120,200,0.18);
+  --input-bg:rgba(240,248,255,0.9);
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:'DM Sans',sans-serif;
+  overflow:hidden;
+}
+
+.bg{
+  position:fixed;inset:0;
+  background:url('https://images.unsplash.com/photo-1573348722427-f1d6819fdf98?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+}
+.bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,50,110,0.68),rgba(0,100,190,0.50));
+}
+
+.card{
+  width:100%;max-width:440px;
+  padding:42px 44px;
+  border-radius:24px;
+  background:var(--card-bg);
+  backdrop-filter:blur(30px) saturate(2);
+  -webkit-backdrop-filter:blur(30px) saturate(2);
+  z-index:2;position:relative;
+  border:1px solid rgba(255,255,255,0.95);
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.95) inset,
+    0 -1px 0 rgba(0,100,180,0.06) inset,
+    0 24px 64px rgba(0,80,160,0.18),
+    0 6px 20px rgba(0,80,160,0.1),
+    0 1px 4px rgba(0,60,120,0.08);
+  animation:cardIn .65s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(28px) scale(0.97);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+
+.card>*{animation:fadeUp .48s cubic-bezier(0.22,1,0.36,1) both;}
+.brand{animation-delay:.12s;}
+h2{animation-delay:.17s;}
+.subtitle{animation-delay:.21s;}
+.field:nth-child(4){animation-delay:.26s;}
+.field:nth-child(5){animation-delay:.32s;}
+.btn{animation-delay:.38s;}
+.link{animation-delay:.43s;}
+#error{animation-delay:.46s;}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(12px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:22px;}
+.brand-box{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,#00b4d8,#0077cc);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:#fff;font-size:16px;
+  box-shadow:0 4px 12px rgba(0,100,200,0.3),0 1px 0 rgba(255,255,255,0.4) inset;
+  transition:transform .3s,box-shadow .3s;cursor:default;
+}
+.brand-box:hover{
+  transform:rotate(-8deg) scale(1.1);
+  box-shadow:0 6px 20px rgba(0,120,220,0.4),0 1px 0 rgba(255,255,255,0.4) inset;
+}
+.brand-name{font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;color:var(--text);}
+.brand-name span{color:var(--accent);}
+
+h2{font-family:'Bebas Neue';font-size:2.2rem;color:var(--text);margin-bottom:4px;}
+.subtitle{color:var(--muted);margin-bottom:22px;font-size:14px;}
+
+.field{margin-bottom:16px;}
+label{
+  font-size:11px;font-weight:600;letter-spacing:.8px;
+  color:var(--muted);margin-bottom:6px;display:block;
+  transition:color .2s;
+}
+.field:focus-within label{color:var(--accent);}
+
+.input-wrap{position:relative;}
+.input-icon{
+  position:absolute;left:13px;top:50%;
+  transform:translateY(-50%);font-size:14px;
+  pointer-events:none;transition:transform .2s;
+}
+.field:focus-within .input-icon{transform:translateY(-50%) scale(1.15);}
+
+input{
+  width:100%;padding:12px 42px;border-radius:12px;
+  border:1.5px solid var(--border);
+  background:var(--input-bg);
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;
+  box-shadow:0 1px 3px rgba(0,80,160,0.06),0 1px 0 rgba(255,255,255,0.8) inset;
+  transition:border-color .22s,box-shadow .22s,background .22s;
+}
+input::placeholder{color:#a0b8cc;}
+input:focus{
+  border-color:rgba(0,119,200,0.5);
+  background:rgba(232,246,255,0.98);
+  box-shadow:0 0 0 3px rgba(0,119,200,0.1),0 1px 0 rgba(255,255,255,0.8) inset;
+}
+input.invalid{
+  border-color:rgba(210,50,50,0.5);
+  animation:shake .35s ease;
+}
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-5px);}
+  40%{transform:translateX(5px);}
+  60%{transform:translateX(-3px);}
+  80%{transform:translateX(3px);}
+}
+
+.eye{
+  position:absolute;right:12px;top:50%;
+  transform:translateY(-50%);cursor:pointer;
+  font-size:15px;opacity:.4;
+  transition:opacity .2s,transform .2s;
+}
+.eye:hover{opacity:.85;transform:translateY(-50%) scale(1.15);}
+
+.btn{
+  width:100%;padding:13px;border:none;border-radius:12px;
+  background:linear-gradient(135deg,#00b4d8 0%,#0077cc 100%);
+  color:#fff;margin-top:8px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 16px rgba(0,100,200,0.32),0 1px 0 rgba(255,255,255,0.25) inset;
+  transition:transform .18s,box-shadow .18s,filter .18s;
+}
+.btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent);
+  opacity:0;transition:opacity .2s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,100,200,0.38),0 1px 0 rgba(255,255,255,0.25) inset;filter:brightness(1.06);}
+.btn:hover::before{opacity:1;}
+.btn:active{transform:translateY(0) scale(.98);}
+
+.ripple{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,0.3);
+  transform:scale(0);animation:rippleAnim .55s linear;
+  pointer-events:none;
+}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0;}}
+
+.btn.loading{pointer-events:none;color:transparent;}
+.btn.loading::after{
+  content:'';position:absolute;
+  width:18px;height:18px;top:50%;left:50%;margin:-9px 0 0 -9px;
+  border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
+  border-radius:50%;animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.success-overlay{
+  position:absolute;inset:0;border-radius:24px;
+  background:linear-gradient(135deg,rgba(225,248,255,0.95),rgba(210,238,255,0.92));
+  backdrop-filter:blur(8px);
+  display:none;
+  flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  z-index:10;
+}
+.success-overlay.show{
+  display:flex;
+  animation:fadeIn .4s ease both;
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+.success-icon{
+  font-size:48px;
+  animation:popIn .5s cubic-bezier(0.34,1.56,0.64,1) both .05s;
+}
+@keyframes popIn{from{transform:scale(0) rotate(-15deg);}to{transform:scale(1) rotate(0);}}
+.success-text{font-family:'Bebas Neue';font-size:1.8rem;color:var(--text);}
+.success-sub{color:var(--muted);font-size:13px;}
+
+.link{text-align:center;margin-top:14px;}
+.link a{
+  color:var(--accent);text-decoration:none;font-size:14px;position:relative;
+}
+.link a::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;
+  height:1px;background:var(--accent);
+  transform:scaleX(0);transform-origin:left;transition:transform .25s;
+}
+.link a:hover::after{transform:scaleX(1);}
+
+#error{
+  text-align:center;color:#c0392b;margin-top:10px;
+  display:none;font-size:13px;font-weight:500;
+}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="card" id="card">
+
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-icon">🚗</div>
+    <div class="success-text">Welcome Back!</div>
+    <p class="success-sub">Redirecting to dashboard…</p>
+  </div>
+
+  <div class="brand">
+    <div class="brand-box">P</div>
+    <div class="brand-name">SMART<span>PARK</span></div>
+  </div>
+
+  <h2>LOGIN</h2>
+  <p class="subtitle">Access your SmartPark account</p>
+
+  <div class="field">
+    <label>EMAIL</label>
+    <div class="input-wrap">
+      <span class="input-icon">✉️</span>
+      <input id="email" type="email" placeholder="you@example.com" autocomplete="email">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>PASSWORD</label>
+    <div class="input-wrap">
+      <span class="input-icon">🔒</span>
+      <input id="password" type="password" placeholder="Your password">
+      <span class="eye" id="eyeBtn" onclick="toggle()">👁</span>
+    </div>
+  </div>
+
+  <button class="btn" id="loginBtn" onclick="login(event)">Login →</button>
+  <p id="error"></p>
+
+  <div class="link">
+    <a href="signup.html">Create account</a>
+  </div>
+
+</div>
+
+<script>
+function toggle(){
+  const p=document.getElementById('password');
+  p.type=p.type==='password'?'text':'password';
+  document.getElementById('eyeBtn').textContent=p.type==='password'?'👁':'🙈';
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginBtn').click();});
+
+function addRipple(btn,e){
+  const r=document.createElement('span');r.className='ripple';
+  const rect=btn.getBoundingClientRect();
+  const size=Math.max(rect.width,rect.height);
+  r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+  btn.appendChild(r);setTimeout(()=>r.remove(),600);
+}
+
+function login(e){
+  const btn=document.getElementById('loginBtn');
+  addRipple(btn,e);
+  const err=document.getElementById('error');
+  let bad=false;
+  ['email','password'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el.value.trim()){
+      el.classList.add('invalid');
+      setTimeout(()=>el.classList.remove('invalid'),400);
+      bad=true;
+    }
+  });
+  if(bad){err.textContent='Please fill all fields';err.style.display='block';return;}
+  err.style.display='none';
+  btn.classList.add('loading');
+  setTimeout(()=>{
+    btn.classList.remove('loading');
+    document.getElementById('successOverlay').classList.add('show');
+  },1400);
+}
+</script>
+</body>
+</html>
