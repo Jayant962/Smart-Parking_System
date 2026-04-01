@@ -59,7 +59,7 @@ body{
   to{opacity:1;transform:translateY(0) scale(1);}
 }
 
-.card>*{animation:fadeUp .48s cubic-bezier(0.22,1,0.36,1) both;}
+form>*{animation:fadeUp .48s cubic-bezier(0.22,1,0.36,1) both;}
 .brand{animation-delay:.12s;}
 h2{animation-delay:.17s;}
 .subtitle{animation-delay:.21s;}
@@ -154,13 +154,6 @@ input.invalid{
 }
 .eye:hover{opacity:.85;transform:translateY(-50%) scale(1.15);}
 
-.strength-bar{display:flex;gap:4px;margin-top:5px;height:3px;}
-.strength-bar span{
-  flex:1;border-radius:2px;
-  background:rgba(0,80,160,0.1);
-  transition:background .35s ease;
-}
-
 .btn{
   width:100%;padding:13px;border:none;border-radius:12px;
   background:linear-gradient(135deg,#00b4d8 0%,#0077cc 100%);
@@ -247,114 +240,118 @@ input.invalid{
     <p class="success-sub">Welcome to SmartPark</p>
   </div>
 
-  <div class="brand">
-    <div class="brand-box">P</div>
-    <div class="brand-name">SMART<span>PARK</span></div>
-  </div>
+  <form id="signupForm" action="/signup" method="POST">
 
-  <h2>CREATE ACCOUNT</h2>
-  <p class="subtitle">Reserve your spot. Smarter, faster, always.</p>
-
-  <div class="field">
-    <label>FULL NAME</label>
-    <div class="input-wrap">
-      <span class="input-icon">👤</span>
-      <input id="name" type="text" placeholder="John Doe" autocomplete="name">
-      <span class="check" id="nameCheck">✅</span>
+    <div class="brand">
+      <div class="brand-box">P</div>
+      <div class="brand-name">SMART<span>PARK</span></div>
     </div>
-  </div>
 
-  <div class="field">
-    <label>EMAIL ADDRESS</label>
-    <div class="input-wrap">
-      <span class="input-icon">✉️</span>
-      <input id="email" type="email" placeholder="you@example.com" autocomplete="email">
-      <span class="check" id="emailCheck">✅</span>
+    <h2>CREATE ACCOUNT</h2>
+    <p class="subtitle">Reserve your spot. Smarter, faster, always.</p>
+
+    <div class="field">
+      <label for="name">FULL NAME</label>
+      <div class="input-wrap">
+        <span class="input-icon">👤</span>
+        <input id="name" name="name" type="text" placeholder="John Doe" autocomplete="name">
+        <span class="check" id="nameCheck">✅</span>
+      </div>
     </div>
-  </div>
 
-  <div class="field">
-    <label>PASSWORD</label>
-    <div class="input-wrap">
-      <span class="input-icon">🔒</span>
-      <input id="password" type="password" placeholder="Create a password">
-      <span class="eye" id="eyeBtn" onclick="toggle()">👁</span>
+    <div class="field">
+      <label for="email">EMAIL ADDRESS</label>
+      <div class="input-wrap">
+        <span class="input-icon">✉️</span>
+        <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email">
+        <span class="check" id="emailCheck">✅</span>
+      </div>
     </div>
-    <div class="strength-bar">
-      <span id="s1"></span><span id="s2"></span><span id="s3"></span><span id="s4"></span>
+
+    <div class="field">
+      <label for="password">PASSWORD</label>
+      <div class="input-wrap">
+        <span class="input-icon">🔒</span>
+        <input id="password" name="password" type="password" placeholder="Create a password" autocomplete="new-password">
+        <span class="eye" id="eyeBtn" onclick="toggle()">👁</span>
+      </div>
     </div>
-  </div>
 
-  <button class="btn" id="signupBtn" onclick="signup(event)">Create My Account →</button>
-  <p id="error"></p>
+    <button type="submit" class="btn" id="signupBtn">Create My Account →</button>
+    <p id="error"></p>
 
-  <div class="link">
-    <a href="/login">Sign in to your account</a>
-  </div>
+    <div class="link">
+      <a href="/login">Sign in to your account</a>
+    </div>
+
+  </form>
 
 </div>
 
 <script>
 function toggle(){
-  const p=document.getElementById('password');
-  p.type=p.type==='password'?'text':'password';
-  document.getElementById('eyeBtn').textContent=p.type==='password'?'👁':'🙈';
+  const p = document.getElementById('password');
+  p.type = p.type === 'password' ? 'text' : 'password';
+  document.getElementById('eyeBtn').textContent = p.type === 'password' ? '👁' : '🙈';
 }
 
-document.getElementById('name').addEventListener('input',function(){
-  const ok=this.value.trim().length>=2;
-  this.classList.toggle('valid',ok);
-  document.getElementById('nameCheck').classList.toggle('show',ok);
+document.getElementById('name').addEventListener('input', function(){
+  const ok = this.value.trim().length >= 2;
+  this.classList.toggle('valid', ok);
+  document.getElementById('nameCheck').classList.toggle('show', ok);
 });
 
-document.getElementById('email').addEventListener('input',function(){
-  const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value.trim());
-  this.classList.toggle('valid',ok);
-  document.getElementById('emailCheck').classList.toggle('show',ok);
+document.getElementById('email').addEventListener('input', function(){
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value.trim());
+  this.classList.toggle('valid', ok);
+  document.getElementById('emailCheck').classList.toggle('show', ok);
 });
 
-document.getElementById('password').addEventListener('input',function(){
-  const v=this.value;
-  let score=0;
-  if(v.length>=6) score++;
-  if(/[A-Z]/.test(v)) score++;
-  if(/[0-9]/.test(v)) score++;
-  if(/[^A-Za-z0-9]/.test(v)) score++;
-  const colors=['','#e74c3c','#f39c12','#f1c40f','#00b894'];
-  for(let i=1;i<=4;i++){
-    document.getElementById('s'+i).style.background=i<=score?colors[score]:'rgba(0,80,160,0.1)';
-  }
-});
-
-function addRipple(btn,e){
-  const r=document.createElement('span');r.className='ripple';
-  const rect=btn.getBoundingClientRect();
-  const size=Math.max(rect.width,rect.height);
-  r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
-  btn.appendChild(r);setTimeout(()=>r.remove(),600);
+function addRipple(btn, e){
+  const r = document.createElement('span');
+  r.className = 'ripple';
+  const rect = btn.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px`;
+  btn.appendChild(r);
+  setTimeout(() => r.remove(), 600);
 }
 
-function signup(e){
-  const btn=document.getElementById('signupBtn');
-  addRipple(btn,e);
-  const err=document.getElementById('error');
-  let bad=false;
-  ['name','email','password'].forEach(id=>{
-    const el=document.getElementById(id);
+document.getElementById('signupForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const btn = document.getElementById('signupBtn');
+  const err = document.getElementById('error');
+
+  addRipple(btn, e);
+
+  // Client-side validation
+  let bad = false;
+  ['name', 'email', 'password'].forEach(id => {
+    const el = document.getElementById(id);
     if(!el.value.trim()){
       el.classList.add('invalid');
-      setTimeout(()=>el.classList.remove('invalid'),400);
-      bad=true;
+      setTimeout(() => el.classList.remove('invalid'), 400);
+      bad = true;
     }
   });
-  if(bad){err.textContent='Please fill all fields';err.style.display='block';return;}
-  err.style.display='none';
+
+  if(bad){
+    err.textContent = 'Please fill all fields';
+    err.style.display = 'block';
+    return;
+  }
+
+  err.style.display = 'none';
   btn.classList.add('loading');
-  setTimeout(()=>{
+
+  // Play success animation then submit form normally to Flask
+  setTimeout(() => {
     btn.classList.remove('loading');
     document.getElementById('successOverlay').classList.add('show');
-  },1400);
-}
+    setTimeout(() => this.submit(), 900);
+  }, 1400);
+});
 </script>
 </body>
 </html>

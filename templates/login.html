@@ -59,7 +59,7 @@ body{
   to{opacity:1;transform:translateY(0) scale(1);}
 }
 
-.card>*{animation:fadeUp .48s cubic-bezier(0.22,1,0.36,1) both;}
+form>*{animation:fadeUp .48s cubic-bezier(0.22,1,0.36,1) both;}
 .brand{animation-delay:.12s;}
 h2{animation-delay:.17s;}
 .subtitle{animation-delay:.21s;}
@@ -230,78 +230,97 @@ input.invalid{
     <p class="success-sub">Redirecting to dashboard…</p>
   </div>
 
-  <div class="brand">
-    <div class="brand-box">P</div>
-    <div class="brand-name">SMART<span>PARK</span></div>
-  </div>
+  <form id="loginForm" action="/submit" method="POST">
 
-  <h2>LOGIN</h2>
-  <p class="subtitle">Access your SmartPark account</p>
-
-  <div class="field">
-    <label>EMAIL</label>
-    <div class="input-wrap">
-      <span class="input-icon">✉️</span>
-      <input id="email" type="email" placeholder="you@example.com" autocomplete="email">
+    <div class="brand">
+      <div class="brand-box">P</div>
+      <div class="brand-name">SMART<span>PARK</span></div>
     </div>
-  </div>
 
-  <div class="field">
-    <label>PASSWORD</label>
-    <div class="input-wrap">
-      <span class="input-icon">🔒</span>
-      <input id="password" type="password" placeholder="Your password">
-      <span class="eye" id="eyeBtn" onclick="toggle()">👁</span>
+    <h2>LOGIN</h2>
+    <p class="subtitle">Access your SmartPark account</p>
+
+    <div class="field">
+      <label for="email">EMAIL</label>
+      <div class="input-wrap">
+        <span class="input-icon">✉️</span>
+        <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email">
+      </div>
     </div>
-  </div>
 
-  <button class="btn" id="loginBtn" onclick="login(event)">Login →</button>
-  <p id="error"></p>
+    <div class="field">
+      <label for="password">PASSWORD</label>
+      <div class="input-wrap">
+        <span class="input-icon">🔒</span>
+        <input id="password" name="password" type="password" placeholder="Your password" autocomplete="current-password">
+        <span class="eye" id="eyeBtn" onclick="toggle()">👁</span>
+      </div>
+    </div>
 
-  <div class="link">
-    <a href="/signup">Create account</a>
-  </div>
+    <button type="submit" class="btn" id="loginBtn">Login →</button>
+    <p id="error"></p>
+
+    <div class="link">
+      <a href="/signup">Create account</a>
+    </div>
+
+  </form>
 
 </div>
 
 <script>
 function toggle(){
-  const p=document.getElementById('password');
-  p.type=p.type==='password'?'text':'password';
-  document.getElementById('eyeBtn').textContent=p.type==='password'?'👁':'🙈';
+  const p = document.getElementById('password');
+  p.type = p.type === 'password' ? 'text' : 'password';
+  document.getElementById('eyeBtn').textContent = p.type === 'password' ? '👁' : '🙈';
 }
 
-document.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginBtn').click();});
-
-function addRipple(btn,e){
-  const r=document.createElement('span');r.className='ripple';
-  const rect=btn.getBoundingClientRect();
-  const size=Math.max(rect.width,rect.height);
-  r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
-  btn.appendChild(r);setTimeout(()=>r.remove(),600);
+function addRipple(btn, e) {
+  const r = document.createElement('span');
+  r.className = 'ripple';
+  const rect = btn.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px`;
+  btn.appendChild(r);
+  setTimeout(() => r.remove(), 600);
 }
 
-function login(e){
-  const btn=document.getElementById('loginBtn');
-  addRipple(btn,e);
-  const err=document.getElementById('error');
-  let bad=false;
-  ['email','password'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el.value.trim()){
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('error');
+  const emailEl = document.getElementById('email');
+  const passwordEl = document.getElementById('password');
+
+  addRipple(btn, e);
+
+  // Client-side validation
+  let bad = false;
+  [emailEl, passwordEl].forEach(el => {
+    if (!el.value.trim()) {
       el.classList.add('invalid');
-      setTimeout(()=>el.classList.remove('invalid'),400);
-      bad=true;
+      setTimeout(() => el.classList.remove('invalid'), 400);
+      bad = true;
     }
   });
-  if(bad){err.textContent='Please fill all fields';err.style.display='block';return;}
-  err.style.display='none';
+
+  if (bad) {
+    err.textContent = 'Please fill all fields';
+    err.style.display = 'block';
+    return;
+  }
+
+  err.style.display = 'none';
   btn.classList.add('loading');
-  setTimeout(()=>{
+
+  // Play success animation, then submit form normally to Flask
+  setTimeout(() => {
     btn.classList.remove('loading');
     document.getElementById('successOverlay').classList.add('show');
-  },1400);
-}
+    setTimeout(() => this.submit(), 900);
+  }, 1400);
+});
 </script>
 </body>
 </html>
