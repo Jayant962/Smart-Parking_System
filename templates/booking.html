@@ -1,12 +1,624 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPark — Book a Slot</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --accent:#0a84ff;
+  --accent2:#30b0ff;
+  --bg:#0b1622;
+  --card:#111e2d;
+  --card2:#0f1a27;
+  --text:#ddeeff;
+  --muted:#5a7a9a;
+  --border:rgba(30,100,180,0.18);
+  --success:#22c55e;
+  --warn:#f59e0b;
+}
+html,body{height:100%;}
+body{
+  min-height:100vh;
+  background:var(--bg);
+  font-family:'DM Sans',sans-serif;
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* ── TOPBAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 28px;
+  background:rgba(11,22,34,0.97);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(10px);
+}
+.brand{display:flex;align-items:center;gap:9px;}
+.brand-box{
+  width:30px;height:30px;border-radius:8px;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:#fff;font-size:13px;
+  box-shadow:0 0 14px rgba(10,132,255,0.4);
+}
+.brand-name{
+  font-family:'Bebas Neue';font-size:19px;letter-spacing:2.5px;
+  color:var(--text);
+}
+.brand-name span{color:var(--accent2);}
+.status-pill{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--muted);
+  background:rgba(10,132,255,0.08);
+  border:1px solid rgba(10,132,255,0.18);
+  padding:4px 12px;border-radius:20px;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);}
+
+/* ── LAYOUT ── */
+.main{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:calc(100vh - 57px);
+}
+
+/* ── LEFT ── */
+.left-panel{
+  padding:22px 24px;
+  border-right:1px solid var(--border);
+  overflow:auto;
+}
+.panel-title{font-family:'Bebas Neue';font-size:1.4rem;letter-spacing:1.5px;margin-bottom:3px;}
+.panel-sub{color:var(--muted);font-size:12px;margin-bottom:16px;}
+
+/* vehicle toggle */
+.vtoggle{
+  display:flex;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;padding:3px;
+  width:fit-content;margin-bottom:16px;gap:0;
+}
+.vbtn{
+  padding:7px 20px;border:none;border-radius:7px;
+  background:transparent;color:var(--muted);
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;
+  cursor:pointer;transition:all .16s;
+}
+.vbtn.active{background:var(--accent);color:#fff;box-shadow:0 2px 10px rgba(10,132,255,0.4);}
+.vbtn:hover:not(.active){color:var(--text);background:rgba(255,255,255,0.05);}
+
+/* legend */
+.legend{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
+.leg-box{width:14px;height:10px;border-radius:2px;border:1px solid transparent;flex-shrink:0;}
+.lb-empty{background:rgba(20,50,90,0.7);border-color:rgba(30,100,180,0.3);}
+.lb-sel{background:var(--accent);border-color:var(--accent2);}
+.lb-taken{background:rgba(60,20,20,0.8);border-color:rgba(140,50,50,0.5);}
+
+/* grid */
+.grid-wrap{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px 14px;
+  overflow:auto;
+}
+.col-labels{display:flex;margin-bottom:5px;padding-left:26px;}
+.col-label{font-size:10px;color:var(--muted);font-weight:600;text-align:center;flex-shrink:0;letter-spacing:.4px;}
+.row-label-wrap{display:flex;align-items:stretch;}
+.row-label{width:22px;font-size:10px;color:var(--muted);font-weight:600;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;flex-shrink:0;}
+.slots-row{display:flex;margin-bottom:4px;}
+.aisle{height:12px;display:flex;align-items:center;margin-bottom:4px;padding-left:28px;}
+.aisle-line{flex:1;border-top:1.5px dashed rgba(30,100,180,0.2);}
+.aisle-label{font-size:9px;color:rgba(30,130,220,0.35);letter-spacing:1px;font-weight:600;white-space:nowrap;padding:0 6px;}
+.slot{
+  border-radius:3px;
+  border:1px solid rgba(30,100,180,0.25);
+  background:rgba(15,35,65,0.7);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:background .12s,border-color .12s,transform .12s;
+}
+.slot-num{font-size:9px;font-weight:600;color:rgba(80,130,190,0.55);pointer-events:none;transition:color .1s;}
+.slot:hover:not(.taken){
+  background:rgba(10,100,220,0.28);
+  border-color:var(--accent2);
+  transform:scale(1.08);
+  z-index:2;
+}
+.slot:hover:not(.taken) .slot-num{color:rgba(160,210,255,0.9);}
+.slot.selected{
+  background:rgba(10,132,255,0.55);
+  border-color:var(--accent2);
+  box-shadow:0 0 0 2px rgba(10,132,255,0.25);
+  transform:scale(1.05);
+}
+.slot.selected .slot-num{color:#fff;}
+.slot.taken{
+  background:rgba(60,20,20,0.7);
+  border-color:rgba(130,50,50,0.4);
+  cursor:not-allowed;
+}
+.slot.taken .slot-num{color:rgba(140,70,70,0.55);}
+
+/* ── RIGHT ── */
+.right-panel{
+  padding:22px 24px;
+  display:flex;flex-direction:column;gap:18px;
+  background:var(--card2);
+  border-left:1px solid var(--border);
+}
+.sec-title{
+  font-size:10px;font-weight:700;letter-spacing:1px;
+  color:var(--muted);margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;
+}
+.sec-title::before{content:'';width:2px;height:12px;border-radius:1px;background:var(--accent);display:block;}
+
+/* slot preview */
+.slot-preview{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;min-height:56px;
+  display:flex;align-items:center;
+}
+.slot-none{color:var(--muted);font-size:12px;font-style:italic;}
+.slot-id{font-family:'Bebas Neue';font-size:26px;color:var(--accent2);letter-spacing:1.5px;line-height:1;}
+.slot-meta{font-size:11px;color:var(--muted);margin-top:3px;}
+
+/* time */
+.time-label{font-size:10px;font-weight:700;letter-spacing:.8px;color:var(--muted);margin-bottom:4px;display:block;}
+.time-input{
+  width:100%;padding:8px 11px;
+  background:rgba(10,25,45,0.8);
+  border:1px solid var(--border);
+  border-radius:8px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:12px;
+  outline:none;transition:border-color .18s;
+}
+.time-input:focus{border-color:rgba(10,132,255,0.5);}
+.time-input::-webkit-calendar-picker-indicator{filter:invert(.5) sepia(1) saturate(2) hue-rotate(180deg);opacity:.7;}
+
+/* end type toggle */
+.end-toggle{
+  display:flex;gap:0;
+  background:rgba(10,25,45,0.7);
+  border:1px solid var(--border);
+  border-radius:8px;padding:3px;margin-bottom:8px;
+}
+.etbtn{
+  flex:1;padding:6px 0;border:none;border-radius:6px;
+  background:transparent;color:var(--muted);
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;
+  cursor:pointer;transition:all .15s;
+}
+.etbtn.active{background:rgba(10,132,255,0.3);color:var(--accent2);border:1px solid rgba(10,132,255,0.25);}
+.etbtn:hover:not(.active){color:var(--text);}
+
+/* notes */
+.info-note{
+  font-size:11px;line-height:1.5;
+  border-radius:8px;padding:8px 11px;
+}
+.note-blue{color:rgba(100,180,255,0.85);background:rgba(10,80,180,0.12);border:1px solid rgba(10,100,200,0.2);}
+.note-amber{color:rgba(250,180,60,0.9);background:rgba(240,150,30,0.1);border:1px solid rgba(240,150,30,0.2);}
+.flex-note{display:none;}
+.flex-note.show{display:block;}
+
+/* advance */
+.advance-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;
+}
+.adv-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;}
+.adv-row .label{color:var(--muted);}
+.adv-val{font-family:'Bebas Neue';font-size:26px;color:var(--accent2);letter-spacing:1px;}
+.adv-sub{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4;}
+
+/* pay button */
+.pay-btn{
+  width:100%;padding:13px;
+  border:none;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  color:#fff;font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:700;cursor:pointer;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 18px rgba(10,132,255,0.35);
+  transition:transform .15s,filter .15s;
+  margin-top:auto;letter-spacing:.2px;
+}
+.pay-btn:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px);}
+.pay-btn:active:not(:disabled){transform:scale(.98);}
+.pay-btn:disabled{opacity:.38;cursor:not-allowed;background:#1e3a5a;box-shadow:none;}
+.pay-btn.loading{pointer-events:none;color:transparent;}
+.pay-btn.loading::after{
+  content:'';position:absolute;
+  width:16px;height:16px;top:50%;left:50%;margin:-8px 0 0 -8px;
+  border:2px solid rgba(255,255,255,.25);border-top-color:#fff;
+  border-radius:50%;animation:spin .65s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── SUCCESS ── */
+.success-overlay{
+  position:fixed;inset:0;
+  background:rgba(8,17,28,0.96);
+  backdrop-filter:blur(20px);
+  display:none;
+  flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  z-index:200;text-align:center;padding:24px;
+}
+.success-overlay.show{display:flex;animation:fadeIn .35s ease both;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.suc-icon{font-size:52px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both .08s;}
+@keyframes popIn{from{transform:scale(0) rotate(-10deg);}to{transform:scale(1) rotate(0);}}
+.suc-title{font-family:'Bebas Neue';font-size:2.4rem;letter-spacing:2px;color:var(--text);}
+.suc-sub{color:var(--muted);font-size:13px;}
+.suc-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:18px 32px;margin-top:10px;min-width:240px;
+}
+.suc-slot{font-family:'Bebas Neue';font-size:2.2rem;color:var(--accent2);letter-spacing:2px;}
+.suc-info{font-size:12px;color:var(--muted);margin-top:4px;}
+.suc-adv{font-size:15px;font-weight:700;color:var(--success);margin-top:10px;}
+.close-btn{
+  margin-top:12px;padding:9px 28px;
+  border:1px solid var(--border);border-radius:8px;
+  background:transparent;color:var(--muted);
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  cursor:pointer;transition:all .15s;
+}
+.close-btn:hover{background:rgba(255,255,255,0.06);color:var(--text);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:820px){
+  .main{grid-template-columns:1fr;grid-template-rows:auto auto;}
+  .right-panel{border-top:1px solid var(--border);}
+}
+</style>
 </head>
 <body>
-    <h1>Entered in booking page.</h1>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-box">P</div>
+    <div class="brand-name">SMART<span>PARK</span></div>
+  </div>
+  <div class="status-pill">
+    <div class="dot"></div>
+    <span>Open Now</span>
+  </div>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="suc-icon">🎉</div>
+  <div class="suc-title">Booking Confirmed!</div>
+  <p class="suc-sub">Your parking slot is reserved.</p>
+  <div class="suc-card">
+    <div class="suc-slot" id="sucSlotId">—</div>
+    <div class="suc-info" id="sucInfo">—</div>
+    <div class="suc-adv" id="sucAdv">—</div>
+  </div>
+  <button class="close-btn" onclick="resetAll()">Book Another Slot</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+    <div class="panel-title">Select Parking Slot</div>
+    <p class="panel-sub">Click any available slot to reserve it</p>
+
+    <div class="vtoggle">
+      <button class="vbtn active" id="btn4w" onclick="setVehicle('4w')">🚗 4-Wheeler</button>
+      <button class="vbtn" id="btn2w" onclick="setVehicle('2w')">🛵 2-Wheeler</button>
+    </div>
+
+    <div class="legend">
+      <div class="leg"><div class="leg-box lb-empty"></div>Available</div>
+      <div class="leg"><div class="leg-box lb-sel"></div>Selected</div>
+      <div class="leg"><div class="leg-box lb-taken"></div>Occupied</div>
+    </div>
+
+    <div class="grid-wrap" id="gridWrap"></div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel">
+
+    <!-- Selected Slot -->
+    <div>
+      <div class="sec-title">SELECTED SLOT</div>
+      <div class="slot-preview">
+        <div id="slotNone" class="slot-none">No slot selected yet</div>
+        <div id="slotInfo" style="display:none;">
+          <div class="slot-id" id="slotIdDisplay">—</div>
+          <div class="slot-meta" id="slotMetaDisplay">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking Time -->
+    <div>
+      <div class="sec-title">BOOKING TIME</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div>
+          <label class="time-label">START TIME</label>
+          <input type="datetime-local" class="time-input" id="startTime">
+        </div>
+        <div>
+          <label class="time-label">END TIME TYPE</label>
+          <div class="end-toggle">
+            <button class="etbtn active" id="fixedBtn" onclick="setEndType('fixed')">📌 Fixed</button>
+            <button class="etbtn" id="flexBtn" onclick="setEndType('flexible')">🔄 Flexible (+₹20)</button>
+          </div>
+          <div id="fixedEndWrap">
+            <label class="time-label">END TIME (max 24 hrs from start)</label>
+            <input type="datetime-local" class="time-input" id="endTime">
+          </div>
+          <div class="info-note note-amber flex-note" id="flexNote">
+            🔄 <strong>Flexible mode:</strong> Exit anytime within 24 hrs. ₹20 extra added to advance. Balance settled at exit by guard.
+          </div>
+        </div>
+      </div>
+      <div class="info-note note-blue" style="margin-top:10px;">
+        ℹ️ Booking starts 1 hr from now. Max duration is 24 hrs — rebook after that.
+      </div>
+    </div>
+
+    <!-- Advance Payment -->
+    <div>
+      <div class="sec-title">ADVANCE PAYMENT</div>
+      <div class="advance-card">
+        <div class="adv-row">
+          <span class="label">Pay now</span>
+          <span class="adv-val" id="advanceAmt">—</span>
+        </div>
+        <div class="adv-sub">Formula: min(booking cost, ₹50). Remaining balance calculated by guard at exit based on actual duration.</div>
+      </div>
+    </div>
+
+    <!-- Pay Button -->
+    <button class="pay-btn" id="payBtn" disabled onclick="handlePay()">
+      🔒 Select Slot &amp; Time to Pay
+    </button>
+
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let selectedSlot = null;
+let vehicleType  = '4w';
+let endType      = 'fixed';
+
+// Pre-occupied slots (slot numbers, 1-indexed)
+const taken4w = [2,5,9,14,17,21,25,28,33,36,40,44,48,52,57,60,65,68,72,78,82,86,90,95,100,105,108,112];
+const taken2w = [3,7,12,18,22,30,35,40,44,50,55,62,68,72,77,83,88,94,100,106,112,118,124,130,138];
+
+// Grid config — more rows added
+const cfg = {
+  '4w': { rows: 10, cols: 12, slotW: 42, slotH: 28, gap: 5, label: '4-Wheeler Bay' },
+  '2w': { rows: 12, cols: 13, slotW: 28, slotH: 36, gap: 4, label: '2-Wheeler Bay' }
+};
+
+// ── RENDER GRID ──
+function renderGrid() {
+  const wrap  = document.getElementById('gridWrap');
+  const c     = cfg[vehicleType];
+  const taken = vehicleType === '4w' ? taken4w : taken2w;
+  wrap.innerHTML = '';
+
+  // column labels
+  const cl = document.createElement('div');
+  cl.className = 'col-labels';
+  cl.style.cssText = `gap:${c.gap}px;padding-left:26px;`;
+  for (let i = 0; i < c.cols; i++) {
+    const l = document.createElement('div');
+    l.className = 'col-label';
+    l.style.width = c.slotW + 'px';
+    l.textContent = String.fromCharCode(65 + i);
+    cl.appendChild(l);
+  }
+  wrap.appendChild(cl);
+
+  let n = 1;
+  for (let r = 0; r < c.rows; r++) {
+    // drive lane aisle every 2 rows
+    if (r > 0 && r % 2 === 0) {
+      const aisle = document.createElement('div');
+      aisle.className = 'aisle';
+      aisle.style.gap = c.gap + 'px';
+      const l1 = document.createElement('div'); l1.className = 'aisle-line';
+      const al = document.createElement('div'); al.className = 'aisle-label'; al.textContent = '◀ DRIVE LANE ▶';
+      const l2 = document.createElement('div'); l2.className = 'aisle-line';
+      aisle.append(l1, al, l2);
+      wrap.appendChild(aisle);
+    }
+
+    const rw = document.createElement('div'); rw.className = 'row-label-wrap';
+    const rl = document.createElement('div'); rl.className = 'row-label'; rl.textContent = r + 1;
+    rw.appendChild(rl);
+
+    const sr = document.createElement('div'); sr.className = 'slots-row'; sr.style.gap = c.gap + 'px';
+
+    for (let col = 0; col < c.cols; col++) {
+      const id  = String.fromCharCode(65 + col) + (r + 1);
+      const el  = document.createElement('div');
+      el.className = 'slot';
+      el.style.cssText = `width:${c.slotW}px;height:${c.slotH}px;`;
+      el.dataset.slotId = id;
+
+      const sp = document.createElement('span'); sp.className = 'slot-num'; sp.textContent = id;
+      el.appendChild(sp);
+
+      if (taken.includes(n)) {
+        el.classList.add('taken');
+        el.title = 'Occupied';
+      } else {
+        el.addEventListener('click', () => selectSlot(el));
+        el.title = 'Slot ' + id;
+      }
+      n++;
+      sr.appendChild(el);
+    }
+    rw.appendChild(sr);
+    wrap.appendChild(rw);
+  }
+}
+
+// ── SELECT SLOT ──
+function selectSlot(el) {
+  document.querySelectorAll('.slot.selected').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSlot = el.dataset.slotId;
+
+  document.getElementById('slotNone').style.display = 'none';
+  document.getElementById('slotInfo').style.display = 'block';
+  document.getElementById('slotIdDisplay').textContent  = 'Slot ' + selectedSlot;
+  document.getElementById('slotMetaDisplay').textContent =
+    vehicleType === '4w' ? '4-Wheeler Bay · Ground Floor' : '2-Wheeler Bay · Ground Floor';
+
+  updateSummary();
+}
+
+// ── VEHICLE TYPE ──
+function setVehicle(t) {
+  vehicleType = t;
+  selectedSlot = null;
+  document.getElementById('slotNone').style.display = 'block';
+  document.getElementById('slotInfo').style.display  = 'none';
+  document.getElementById('btn4w').classList.toggle('active', t === '4w');
+  document.getElementById('btn2w').classList.toggle('active', t === '2w');
+  renderGrid();
+  updateSummary();
+}
+
+// ── END TIME TYPE ──
+function setEndType(t) {
+  endType = t;
+  document.getElementById('fixedBtn').classList.toggle('active', t === 'fixed');
+  document.getElementById('flexBtn').classList.toggle('active', t === 'flexible');
+  document.getElementById('fixedEndWrap').style.display = t === 'fixed' ? 'block' : 'none';
+  document.getElementById('flexNote').classList.toggle('show', t === 'flexible');
+  updateSummary();
+}
+
+// ── COST CALC ──
+function calcCost(sv, ev, flex) {
+  if (!sv) return null;
+  const start = new Date(sv);
+  let end;
+  if (flex) {
+    end = new Date(start.getTime() + 2 * 3600000); // 2hr estimate for flexible
+  } else {
+    if (!ev) return null;
+    end = new Date(ev);
+    if (end <= start) return null;
+  }
+  const diffMs = end - start;
+  if (diffMs > 24 * 3600000) return null; // max 24 hrs
+  const hrs = Math.ceil(diffMs / 3600000);
+  if (hrs <= 0) return null;
+  const base    = hrs <= 1 ? 20 : 20 + (hrs - 1) * 10;
+  const flexFee = flex ? 20 : 0;
+  const total   = base + flexFee;
+  const advance = Math.min(total, 50);
+  return { hrs, base, flexFee, total, advance, start, end };
+}
+
+function fmtTime(d) { return d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }); }
+function fmtDate(d) { return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); }
+
+// ── UPDATE SUMMARY ──
+function updateSummary() {
+  const sv   = document.getElementById('startTime').value;
+  const ev   = document.getElementById('endTime').value;
+  const flex = endType === 'flexible';
+  const c    = calcCost(sv, ev, flex);
+
+  document.getElementById('advanceAmt').textContent = c ? '₹' + c.advance : '—';
+
+  const ready = selectedSlot && c;
+  const btn   = document.getElementById('payBtn');
+  btn.disabled    = !ready;
+  btn.textContent = ready
+    ? `✅  Pay ₹${c.advance} Advance · Slot ${selectedSlot}`
+    : '🔒 Select Slot & Time to Pay';
+}
+
+// ── PAY ──
+function handlePay() {
+  const sv   = document.getElementById('startTime').value;
+  const ev   = document.getElementById('endTime').value;
+  const flex = endType === 'flexible';
+  const c    = calcCost(sv, ev, flex);
+  if (!c || !selectedSlot) return;
+
+  const btn = document.getElementById('payBtn');
+  btn.classList.add('loading');
+  setTimeout(() => {
+    btn.classList.remove('loading');
+    document.getElementById('sucSlotId').textContent = 'Slot ' + selectedSlot;
+    document.getElementById('sucInfo').textContent   =
+      `${fmtDate(c.start)}, ${fmtTime(c.start)} → ${flex ? 'Flexible (exit within 24 hrs)' : fmtTime(c.end)}`;
+    document.getElementById('sucAdv').textContent    = `Advance Paid: ₹${c.advance} · Balance settled at exit`;
+    document.getElementById('successOverlay').classList.add('show');
+  }, 1400);
+}
+
+// ── RESET ──
+function resetAll() {
+  selectedSlot = null;
+  document.getElementById('successOverlay').classList.remove('show');
+  document.getElementById('slotNone').style.display = 'block';
+  document.getElementById('slotInfo').style.display  = 'none';
+  document.querySelectorAll('.slot.selected').forEach(s => s.classList.remove('selected'));
+  updateSummary();
+}
+
+// ── DEFAULT TIMES ──
+function setDefaultTimes() {
+  const now   = new Date(); now.setSeconds(0, 0);
+  const start = new Date(now.getTime() + 3600000);       // +1 hr
+  const end   = new Date(start.getTime() + 3600000);     // +1 hr after start
+  const max   = new Date(start.getTime() + 24 * 3600000);
+
+  const si = document.getElementById('startTime');
+  const ei = document.getElementById('endTime');
+  si.value = start.toISOString().slice(0, 16);
+  ei.value = end.toISOString().slice(0, 16);
+  ei.min   = start.toISOString().slice(0, 16);
+  ei.max   = max.toISOString().slice(0, 16);
+}
+
+// ── EVENTS ──
+document.getElementById('startTime').addEventListener('change', function () {
+  const sv = this.value;
+  if (sv) {
+    const s   = new Date(sv);
+    const max = new Date(s.getTime() + 24 * 3600000);
+    const ei  = document.getElementById('endTime');
+    ei.min = sv;
+    ei.max = max.toISOString().slice(0, 16);
+    if (ei.value && new Date(ei.value) > max) ei.value = max.toISOString().slice(0, 16);
+  }
+  updateSummary();
+});
+document.getElementById('endTime').addEventListener('change', updateSummary);
+
+// ── INIT ──
+setDefaultTimes();
+renderGrid();
+updateSummary();
+</script>
 </body>
 </html>
