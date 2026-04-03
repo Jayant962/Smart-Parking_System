@@ -235,14 +235,53 @@ body{
 .pay-btn:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px);}
 .pay-btn:active:not(:disabled){transform:scale(.98);}
 .pay-btn:disabled{opacity:.38;cursor:not-allowed;background:#1e3a5a;box-shadow:none;}
-.pay-btn.loading{pointer-events:none;color:transparent;}
-.pay-btn.loading::after{
-  content:'';position:absolute;
-  width:16px;height:16px;top:50%;left:50%;margin:-8px 0 0 -8px;
-  border:2px solid rgba(255,255,255,.25);border-top-color:#fff;
-  border-radius:50%;animation:spin .65s linear infinite;
+
+/* ── GPAY MODAL ── */
+.gpay-modal{
+  position:fixed;inset:0;
+  background:rgba(8,17,28,0.92);
+  backdrop-filter:blur(16px);
+  display:none;
+  align-items:center;justify-content:center;
+  z-index:300;
 }
-@keyframes spin{to{transform:rotate(360deg);}}
+.gpay-modal.show{display:flex;animation:fadeIn .25s ease both;}
+.gpay-box{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  text-align:center;
+  max-width:340px;width:90%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+}
+.gpay-title{font-family:'Bebas Neue';font-size:1.6rem;letter-spacing:2px;margin-bottom:4px;}
+.gpay-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.gpay-img{width:100%;border-radius:10px;border:1px solid var(--border);}
+.gpay-amt{
+  font-family:'Bebas Neue';font-size:2rem;color:var(--accent2);
+  letter-spacing:1px;margin:14px 0 4px;
+}
+.gpay-hint{font-size:11px;color:var(--muted);margin-bottom:16px;}
+.gpay-confirm{
+  width:100%;padding:11px;
+  border:none;border-radius:8px;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  color:#fff;font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;
+  box-shadow:0 4px 14px rgba(10,132,255,0.35);
+  transition:filter .15s,transform .15s;
+  margin-bottom:8px;
+}
+.gpay-confirm:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.gpay-close{
+  width:100%;padding:9px;
+  border:1px solid var(--border);border-radius:8px;
+  background:transparent;color:var(--muted);
+  font-family:'DM Sans',sans-serif;font-size:12px;
+  cursor:pointer;transition:all .15s;
+}
+.gpay-close:hover{background:rgba(255,255,255,0.06);color:var(--text);}
 
 /* ── SUCCESS ── */
 .success-overlay{
@@ -251,7 +290,7 @@ body{
   backdrop-filter:blur(20px);
   display:none;
   flex-direction:column;align-items:center;justify-content:center;gap:10px;
-  z-index:200;text-align:center;padding:24px;
+  z-index:400;text-align:center;padding:24px;
 }
 .success-overlay.show{display:flex;animation:fadeIn .35s ease both;}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
@@ -293,6 +332,19 @@ body{
   <div class="status-pill">
     <div class="dot"></div>
     <span>Open Now</span>
+  </div>
+</div>
+
+<!-- GOOGLE PAY MODAL -->
+<div class="gpay-modal" id="gpayModal">
+  <div class="gpay-box">
+    <div class="gpay-title">Scan &amp; Pay</div>
+    <p class="gpay-sub">Use Google Pay to scan the QR below</p>
+    <img class="gpay-img" src="{{ url_for('static', filename='google_pay.jpeg') }}" alt="Google Pay QR Code">
+    <div class="gpay-amt" id="gpayAmtDisplay">₹—</div>
+    <p class="gpay-hint">After payment, tap the button below to confirm</p>
+    <button class="gpay-confirm" onclick="confirmPayment()">✅ I've Paid — Confirm Booking</button>
+    <button class="gpay-close" onclick="closeGpay()">✕ Cancel</button>
   </div>
 </div>
 
@@ -404,7 +456,6 @@ let endType      = 'fixed';
 const taken4w = [2,5,9,14,17,21,25,28,33,36,40,44,48,52,57,60,65,68,72,78,82,86,90,95,100,105,108,112];
 const taken2w = [3,7,12,18,22,30,35,40,44,50,55,62,68,72,77,83,88,94,100,106,112,118,124,130,138];
 
-// Grid config — more rows added
 const cfg = {
   '4w': { rows: 10, cols: 12, slotW: 42, slotH: 28, gap: 5, label: '4-Wheeler Bay' },
   '2w': { rows: 12, cols: 13, slotW: 28, slotH: 36, gap: 4, label: '2-Wheeler Bay' }
@@ -417,7 +468,6 @@ function renderGrid() {
   const taken = vehicleType === '4w' ? taken4w : taken2w;
   wrap.innerHTML = '';
 
-  // column labels
   const cl = document.createElement('div');
   cl.className = 'col-labels';
   cl.style.cssText = `gap:${c.gap}px;padding-left:26px;`;
@@ -432,7 +482,6 @@ function renderGrid() {
 
   let n = 1;
   for (let r = 0; r < c.rows; r++) {
-    // drive lane aisle every 2 rows
     if (r > 0 && r % 2 === 0) {
       const aisle = document.createElement('div');
       aisle.className = 'aisle';
@@ -518,14 +567,14 @@ function calcCost(sv, ev, flex) {
   const start = new Date(sv);
   let end;
   if (flex) {
-    end = new Date(start.getTime() + 2 * 3600000); // 2hr estimate for flexible
+    end = new Date(start.getTime() + 2 * 3600000);
   } else {
     if (!ev) return null;
     end = new Date(ev);
     if (end <= start) return null;
   }
   const diffMs = end - start;
-  if (diffMs > 24 * 3600000) return null; // max 24 hrs
+  if (diffMs > 24 * 3600000) return null;
   const hrs = Math.ceil(diffMs / 3600000);
   if (hrs <= 0) return null;
   const base    = hrs <= 1 ? 20 : 20 + (hrs - 1) * 10;
@@ -551,11 +600,11 @@ function updateSummary() {
   const btn   = document.getElementById('payBtn');
   btn.disabled    = !ready;
   btn.textContent = ready
-    ? `✅  Pay ₹${c.advance} Advance · Slot ${selectedSlot}`
+    ? `Pay ₹${c.advance} via Google Pay · Slot ${selectedSlot}`
     : '🔒 Select Slot & Time to Pay';
 }
 
-// ── PAY ──
+// ── HANDLE PAY — opens Google Pay modal ──
 function handlePay() {
   const sv   = document.getElementById('startTime').value;
   const ev   = document.getElementById('endTime').value;
@@ -563,22 +612,39 @@ function handlePay() {
   const c    = calcCost(sv, ev, flex);
   if (!c || !selectedSlot) return;
 
-  const btn = document.getElementById('payBtn');
-  btn.classList.add('loading');
-  setTimeout(() => {
-    btn.classList.remove('loading');
-    document.getElementById('sucSlotId').textContent = 'Slot ' + selectedSlot;
-    document.getElementById('sucInfo').textContent   =
-      `${fmtDate(c.start)}, ${fmtTime(c.start)} → ${flex ? 'Flexible (exit within 24 hrs)' : fmtTime(c.end)}`;
-    document.getElementById('sucAdv').textContent    = `Advance Paid: ₹${c.advance} · Balance settled at exit`;
-    document.getElementById('successOverlay').classList.add('show');
-  }, 1400);
+  // Store pending cost for confirmation step
+  window._pendingCost = c;
+
+  // Show amount in modal and open it
+  document.getElementById('gpayAmtDisplay').textContent = '₹' + c.advance;
+  document.getElementById('gpayModal').classList.add('show');
+}
+
+// ── CLOSE GPAY MODAL ──
+function closeGpay() {
+  document.getElementById('gpayModal').classList.remove('show');
+}
+
+// ── CONFIRM PAYMENT — shows booking success ──
+function confirmPayment() {
+  const c = window._pendingCost;
+  if (!c || !selectedSlot) return;
+
+  closeGpay();
+
+  document.getElementById('sucSlotId').textContent = 'Slot ' + selectedSlot;
+  document.getElementById('sucInfo').textContent   =
+    `${fmtDate(c.start)}, ${fmtTime(c.start)} → ${endType === 'flexible' ? 'Flexible (exit within 24 hrs)' : fmtTime(c.end)}`;
+  document.getElementById('sucAdv').textContent    = `Advance Paid: ₹${c.advance} · Balance settled at exit`;
+  document.getElementById('successOverlay').classList.add('show');
 }
 
 // ── RESET ──
 function resetAll() {
   selectedSlot = null;
+  window._pendingCost = null;
   document.getElementById('successOverlay').classList.remove('show');
+  document.getElementById('gpayModal').classList.remove('show');
   document.getElementById('slotNone').style.display = 'block';
   document.getElementById('slotInfo').style.display  = 'none';
   document.querySelectorAll('.slot.selected').forEach(s => s.classList.remove('selected'));
@@ -588,8 +654,8 @@ function resetAll() {
 // ── DEFAULT TIMES ──
 function setDefaultTimes() {
   const now   = new Date(); now.setSeconds(0, 0);
-  const start = new Date(now.getTime() + 3600000);       // +1 hr
-  const end   = new Date(start.getTime() + 3600000);     // +1 hr after start
+  const start = new Date(now.getTime() + 3600000);
+  const end   = new Date(start.getTime() + 3600000);
   const max   = new Date(start.getTime() + 24 * 3600000);
 
   const si = document.getElementById('startTime');
@@ -614,6 +680,11 @@ document.getElementById('startTime').addEventListener('change', function () {
   updateSummary();
 });
 document.getElementById('endTime').addEventListener('change', updateSummary);
+
+// Close modal on backdrop click
+document.getElementById('gpayModal').addEventListener('click', function(e) {
+  if (e.target === this) closeGpay();
+});
 
 // ── INIT ──
 setDefaultTimes();
