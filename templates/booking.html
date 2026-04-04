@@ -352,13 +352,66 @@ body{
 <div class="success-overlay" id="successOverlay">
   <div class="suc-icon">🎉</div>
   <div class="suc-title">Booking Confirmed!</div>
-  <p class="suc-sub">Your parking slot is reserved.</p>
-  <div class="suc-card">
-    <div class="suc-slot" id="sucSlotId">—</div>
-    <div class="suc-info" id="sucInfo">—</div>
-    <div class="suc-adv" id="sucAdv">—</div>
+  <p class="suc-sub">Your parking slip is ready</p>
+
+  <div class="suc-card" style="min-width:300px;text-align:left;">
+    <!-- Header -->
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed rgba(30,100,180,0.25);padding-bottom:10px;margin-bottom:12px;">
+      <div>
+        <div style="font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:2px;color:var(--accent2);">SMARTPARK</div>
+        <div style="font-size:10px;color:var(--muted);">Parking Receipt</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:10px;color:var(--muted);">Booking Ref</div>
+        <div style="font-family:'Bebas Neue';font-size:14px;color:var(--text);letter-spacing:1px;" id="sucRef">—</div>
+      </div>
+    </div>
+
+    <!-- Slot -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+      <div style="background:rgba(10,132,255,0.15);border:1px solid rgba(10,132,255,0.3);border-radius:8px;padding:8px 14px;text-align:center;">
+        <div style="font-size:9px;color:var(--muted);letter-spacing:1px;">SLOT</div>
+        <div class="suc-slot" id="sucSlotId" style="font-size:2rem;">—</div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--text);font-weight:600;" id="sucVehicle">—</div>
+        <div style="font-size:11px;color:var(--muted);">Ground Floor</div>
+      </div>
+    </div>
+
+    <!-- Time Row -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="background:rgba(10,25,50,0.5);border-radius:7px;padding:8px 10px;">
+        <div style="font-size:9px;color:var(--muted);letter-spacing:.8px;margin-bottom:3px;">START</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);" id="sucStart">—</div>
+        <div style="font-size:10px;color:var(--muted);" id="sucStartDate">—</div>
+      </div>
+      <div style="background:rgba(10,25,50,0.5);border-radius:7px;padding:8px 10px;">
+        <div style="font-size:9px;color:var(--muted);letter-spacing:.8px;margin-bottom:3px;">END</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);" id="sucEnd">—</div>
+        <div style="font-size:10px;color:var(--muted);" id="sucEndDate">—</div>
+      </div>
+    </div>
+
+    <!-- Duration + Amount -->
+    <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px dashed rgba(30,100,180,0.25);padding-top:10px;">
+      <div>
+        <div style="font-size:9px;color:var(--muted);letter-spacing:.8px;">DURATION</div>
+        <div style="font-size:13px;color:var(--text);font-weight:600;" id="sucDuration">—</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:9px;color:var(--muted);letter-spacing:.8px;">ADVANCE PAID</div>
+        <div style="font-family:'Bebas Neue';font-size:1.6rem;color:var(--success);letter-spacing:1px;" id="sucAdv">—</div>
+      </div>
+    </div>
+
+    <div style="margin-top:8px;font-size:10px;color:var(--muted);text-align:center;line-height:1.5;" id="sucNote">Balance settled at exit by guard.</div>
   </div>
-  <button class="close-btn" onclick="resetAll()">Book Another Slot</button>
+
+  <div style="display:flex;gap:10px;margin-top:4px;">
+    <button class="close-btn" onclick="window.print()">🖨 Print Slip</button>
+    <button class="close-btn" onclick="resetAll()">Book Another</button>
+  </div>
 </div>
 
 <!-- MAIN -->
@@ -629,13 +682,41 @@ function closeGpay() {
 function confirmPayment() {
   const c = window._pendingCost;
   if (!c || !selectedSlot) return;
-
   closeGpay();
 
-  document.getElementById('sucSlotId').textContent = 'Slot ' + selectedSlot;
-  document.getElementById('sucInfo').textContent   =
-    `${fmtDate(c.start)}, ${fmtTime(c.start)} → ${endType === 'flexible' ? 'Flexible (exit within 24 hrs)' : fmtTime(c.end)}`;
-  document.getElementById('sucAdv').textContent    = `Advance Paid: ₹${c.advance} · Balance settled at exit`;
+  // Booking reference
+  const ref = 'SP' + Date.now().toString().slice(-6);
+  document.getElementById('sucRef').textContent = ref;
+
+  // Slot & vehicle
+  document.getElementById('sucSlotId').textContent = selectedSlot;
+  document.getElementById('sucVehicle').textContent =
+    vehicleType === '4w' ? '4-Wheeler Bay' : '2-Wheeler Bay';
+
+  // Start time
+  document.getElementById('sucStart').textContent = fmtTime(c.start);
+  document.getElementById('sucStartDate').textContent = fmtDate(c.start);
+
+  // End time
+  if (endType === 'flexible') {
+    document.getElementById('sucEnd').textContent = 'Flexible';
+    document.getElementById('sucEndDate').textContent = 'Exit within 24 hrs';
+  } else {
+    document.getElementById('sucEnd').textContent = fmtTime(c.end);
+    document.getElementById('sucEndDate').textContent = fmtDate(c.end);
+  }
+
+  // Duration
+  document.getElementById('sucDuration').textContent =
+    endType === 'flexible' ? 'Up to 24 hrs' : c.hrs + (c.hrs === 1 ? ' hr' : ' hrs');
+
+  // Advance + note
+  document.getElementById('sucAdv').textContent = '₹' + c.advance;
+  document.getElementById('sucNote').textContent =
+    c.total > c.advance
+      ? `Balance ₹${c.total - c.advance} to be settled at exit by guard.`
+      : 'Fully paid. No balance due at exit.';
+
   document.getElementById('successOverlay').classList.add('show');
 }
 
