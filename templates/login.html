@@ -7,245 +7,196 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-
 :root{
-  --accent:#0077cc;
-  --accent2:#00b4d8;
-  --card-bg:rgba(255,255,255,0.75);
-  --text:#1a2a3a;
+  --accent:#0a84ff;
+  --accent2:#30b0ff;
+  --bg:#0b1622;
+  --card:#111e2d;
+  --text:#ddeeff;
   --muted:#5a7a9a;
-  --border:rgba(0,120,200,0.18);
-  --input-bg:rgba(240,248,255,0.9);
+  --border:rgba(30,100,180,0.2);
+  --input-bg:rgba(10,25,50,0.8);
+  --error:#ef4444;
 }
-
 body{
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  min-height:100vh;
+  display:flex;justify-content:center;align-items:center;
   font-family:'DM Sans',sans-serif;
+  background:var(--bg);
   overflow:hidden;
+  position:relative;
 }
-
-.bg{
+/* Animated background grid */
+.bg-grid{
   position:fixed;inset:0;
-  background:url('https://images.unsplash.com/photo-1573348722427-f1d6819fdf98?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+  background-image:
+    linear-gradient(rgba(10,132,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,132,255,0.04) 1px, transparent 1px);
+  background-size:48px 48px;
+  animation:gridMove 20s linear infinite;
 }
-.bg::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(0,50,110,0.68),rgba(0,100,190,0.50));
+@keyframes gridMove{from{background-position:0 0;}to{background-position:48px 48px;}}
+.bg-glow{
+  position:fixed;
+  width:500px;height:500px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(10,100,255,0.12) 0%, transparent 70%);
+  top:-150px;left:-100px;
+  animation:glowFloat 8s ease-in-out infinite;
 }
+.bg-glow2{
+  position:fixed;
+  width:400px;height:400px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(48,176,255,0.08) 0%, transparent 70%);
+  bottom:-100px;right:-80px;
+  animation:glowFloat2 10s ease-in-out infinite;
+}
+@keyframes glowFloat{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,30px);}}
+@keyframes glowFloat2{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,-20px);}}
 
 .card{
-  width:100%;max-width:440px;
-  padding:42px 44px;
-  border-radius:24px;
-  background:var(--card-bg);
-  backdrop-filter:blur(30px) saturate(2);
-  -webkit-backdrop-filter:blur(30px) saturate(2);
+  width:100%;max-width:420px;
+  padding:40px 44px;
+  border-radius:20px;
+  background:var(--card);
+  border:1px solid var(--border);
+  box-shadow:0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(10,132,255,0.05);
   z-index:2;position:relative;
-  border:1px solid rgba(255,255,255,0.95);
-  box-shadow:
-    0 2px 0 rgba(255,255,255,0.95) inset,
-    0 -1px 0 rgba(0,100,180,0.06) inset,
-    0 24px 64px rgba(0,80,160,0.18),
-    0 6px 20px rgba(0,80,160,0.1),
-    0 1px 4px rgba(0,60,120,0.08);
-  animation:cardIn .65s cubic-bezier(0.22,1,0.36,1) both;
+  animation:cardIn .5s cubic-bezier(0.22,1,0.36,1) both;
 }
+@keyframes cardIn{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
 
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(28px) scale(0.97);}
-  to{opacity:1;transform:translateY(0) scale(1);}
-}
-
-form>*{animation:fadeUp .48s cubic-bezier(0.22,1,0.36,1) both;}
-.brand{animation-delay:.12s;}
-h2{animation-delay:.17s;}
-.subtitle{animation-delay:.21s;}
-.field:nth-child(4){animation-delay:.26s;}
-.field:nth-child(5){animation-delay:.32s;}
-.btn{animation-delay:.38s;}
-.link{animation-delay:.43s;}
-#error{animation-delay:.46s;}
-
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(12px);}
-  to{opacity:1;transform:translateY(0);}
-}
-
-.brand{display:flex;align-items:center;gap:10px;margin-bottom:22px;}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
 .brand-box{
-  width:38px;height:38px;border-radius:10px;
-  background:linear-gradient(135deg,#00b4d8,#0077cc);
+  width:36px;height:36px;border-radius:9px;
+  background:var(--accent);
   display:flex;align-items:center;justify-content:center;
-  font-weight:700;color:#fff;font-size:16px;
-  box-shadow:0 4px 12px rgba(0,100,200,0.3),0 1px 0 rgba(255,255,255,0.4) inset;
-  transition:transform .3s,box-shadow .3s;cursor:default;
+  font-weight:700;color:#fff;font-size:14px;
+  box-shadow:0 0 20px rgba(10,132,255,0.4);
 }
-.brand-box:hover{
-  transform:rotate(-8deg) scale(1.1);
-  box-shadow:0 6px 20px rgba(0,120,220,0.4),0 1px 0 rgba(255,255,255,0.4) inset;
-}
-.brand-name{font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;color:var(--text);}
-.brand-name span{color:var(--accent);}
+.brand-name{font-family:'Bebas Neue';font-size:20px;letter-spacing:2.5px;color:var(--text);}
+.brand-name span{color:var(--accent2);}
 
-h2{font-family:'Bebas Neue';font-size:2.2rem;color:var(--text);margin-bottom:4px;}
-.subtitle{color:var(--muted);margin-bottom:22px;font-size:14px;}
+h2{font-family:'Bebas Neue';font-size:2rem;color:var(--text);margin-bottom:4px;letter-spacing:1px;}
+.subtitle{color:var(--muted);margin-bottom:26px;font-size:13px;}
 
 .field{margin-bottom:16px;}
 label{
-  font-size:11px;font-weight:600;letter-spacing:.8px;
+  font-size:10px;font-weight:700;letter-spacing:1px;
   color:var(--muted);margin-bottom:6px;display:block;
   transition:color .2s;
 }
-.field:focus-within label{color:var(--accent);}
-
+.field:focus-within label{color:var(--accent2);}
 .input-wrap{position:relative;}
 .input-icon{
   position:absolute;left:13px;top:50%;
-  transform:translateY(-50%);font-size:14px;
-  pointer-events:none;transition:transform .2s;
+  transform:translateY(-50%);font-size:13px;
+  pointer-events:none;
 }
-.field:focus-within .input-icon{transform:translateY(-50%) scale(1.15);}
-
 input{
-  width:100%;padding:12px 42px;border-radius:12px;
+  width:100%;padding:11px 40px;border-radius:10px;
   border:1.5px solid var(--border);
   background:var(--input-bg);
   color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
   outline:none;
-  box-shadow:0 1px 3px rgba(0,80,160,0.06),0 1px 0 rgba(255,255,255,0.8) inset;
-  transition:border-color .22s,box-shadow .22s,background .22s;
+  transition:border-color .2s,box-shadow .2s;
 }
-input::placeholder{color:#a0b8cc;}
+input::placeholder{color:var(--muted);}
 input:focus{
-  border-color:rgba(0,119,200,0.5);
-  background:rgba(232,246,255,0.98);
-  box-shadow:0 0 0 3px rgba(0,119,200,0.1),0 1px 0 rgba(255,255,255,0.8) inset;
+  border-color:rgba(10,132,255,0.5);
+  box-shadow:0 0 0 3px rgba(10,132,255,0.1);
 }
 input.invalid{
-  border-color:rgba(210,50,50,0.5);
+  border-color:rgba(239,68,68,0.6);
   animation:shake .35s ease;
 }
 @keyframes shake{
   0%,100%{transform:translateX(0);}
-  20%{transform:translateX(-5px);}
-  40%{transform:translateX(5px);}
-  60%{transform:translateX(-3px);}
-  80%{transform:translateX(3px);}
+  25%{transform:translateX(-5px);}
+  75%{transform:translateX(5px);}
 }
-
 .eye{
   position:absolute;right:12px;top:50%;
   transform:translateY(-50%);cursor:pointer;
-  font-size:15px;opacity:.4;
-  transition:opacity .2s,transform .2s;
+  font-size:14px;opacity:.4;transition:opacity .2s;
 }
-.eye:hover{opacity:.85;transform:translateY(-50%) scale(1.15);}
+.eye:hover{opacity:.8;}
+
+/* Server-side error banner */
+.error-banner{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(239,68,68,0.12);
+  border:1px solid rgba(239,68,68,0.3);
+  border-radius:9px;padding:10px 13px;
+  margin-bottom:18px;
+  color:#fca5a5;font-size:12px;font-weight:500;
+  animation:slideDown .3s ease both;
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.error-dot{width:6px;height:6px;border-radius:50%;background:#ef4444;flex-shrink:0;}
+
+/* Client-side inline error */
+.field-error{
+  font-size:11px;color:#fca5a5;margin-top:4px;
+  display:none;padding-left:2px;
+}
+.field-error.show{display:block;}
 
 .btn{
-  width:100%;padding:13px;border:none;border-radius:12px;
-  background:linear-gradient(135deg,#00b4d8 0%,#0077cc 100%);
-  color:#fff;margin-top:8px;cursor:pointer;
-  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;
+  width:100%;padding:12px;border:none;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  color:#fff;margin-top:6px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;
   position:relative;overflow:hidden;
-  box-shadow:0 4px 16px rgba(0,100,200,0.32),0 1px 0 rgba(255,255,255,0.25) inset;
-  transition:transform .18s,box-shadow .18s,filter .18s;
+  box-shadow:0 4px 18px rgba(10,132,255,0.35);
+  transition:transform .15s,filter .15s;letter-spacing:.3px;
 }
-.btn::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent);
-  opacity:0;transition:opacity .2s;
-}
-.btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,100,200,0.38),0 1px 0 rgba(255,255,255,0.25) inset;filter:brightness(1.06);}
-.btn:hover::before{opacity:1;}
-.btn:active{transform:translateY(0) scale(.98);}
-
-.ripple{
-  position:absolute;border-radius:50%;
-  background:rgba(255,255,255,0.3);
-  transform:scale(0);animation:rippleAnim .55s linear;
-  pointer-events:none;
-}
-@keyframes rippleAnim{to{transform:scale(4);opacity:0;}}
-
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.btn:active{transform:scale(.98);}
 .btn.loading{pointer-events:none;color:transparent;}
 .btn.loading::after{
   content:'';position:absolute;
-  width:18px;height:18px;top:50%;left:50%;margin:-9px 0 0 -9px;
+  width:17px;height:17px;top:50%;left:50%;margin:-8.5px 0 0 -8.5px;
   border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
   border-radius:50%;animation:spin .7s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg);}}
 
-.success-overlay{
-  position:absolute;inset:0;border-radius:24px;
-  background:linear-gradient(135deg,rgba(225,248,255,0.95),rgba(210,238,255,0.92));
-  backdrop-filter:blur(8px);
-  display:none;
-  flex-direction:column;align-items:center;justify-content:center;gap:10px;
-  z-index:10;
-}
-.success-overlay.show{
-  display:flex;
-  animation:fadeIn .4s ease both;
-}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-
-.success-icon{
-  font-size:48px;
-  animation:popIn .5s cubic-bezier(0.34,1.56,0.64,1) both .05s;
-}
-@keyframes popIn{from{transform:scale(0) rotate(-15deg);}to{transform:scale(1) rotate(0);}}
-.success-text{font-family:'Bebas Neue';font-size:1.8rem;color:var(--text);}
-.success-sub{color:var(--muted);font-size:13px;}
-
-.link{text-align:center;margin-top:14px;}
-.link a{
-  color:var(--accent);text-decoration:none;font-size:14px;position:relative;
-}
-.link a::after{
-  content:'';position:absolute;bottom:-2px;left:0;right:0;
-  height:1px;background:var(--accent);
-  transform:scaleX(0);transform-origin:left;transition:transform .25s;
-}
-.link a:hover::after{transform:scaleX(1);}
-
-#error{
-  text-align:center;color:#c0392b;margin-top:10px;
-  display:none;font-size:13px;font-weight:500;
-}
+.link{text-align:center;margin-top:16px;}
+.link a{color:var(--accent2);text-decoration:none;font-size:13px;}
+.link a:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
 
-<div class="bg"></div>
-
-<div class="card" id="card">
-
-  <div class="success-overlay" id="successOverlay">
-    <div class="success-icon">🚗</div>
-    <div class="success-text">Welcome Back!</div>
-    <p class="success-sub">Redirecting to dashboard…</p>
+<div class="card">
+  <div class="brand">
+    <div class="brand-box">P</div>
+    <div class="brand-name">SMART<span>PARK</span></div>
   </div>
 
-  <form id="loginForm" action="/submit" method="POST">
+  <h2>WELCOME BACK</h2>
+  <p class="subtitle">Sign in to manage your parking</p>
 
-    <div class="brand">
-      <div class="brand-box">P</div>
-      <div class="brand-name">SMART<span>PARK</span></div>
-    </div>
+  {% if error %}
+  <div class="error-banner">
+    <div class="error-dot"></div>
+    <span>{{ error }}</span>
+  </div>
+  {% endif %}
 
-    <h2>LOGIN</h2>
-    <p class="subtitle">Access your SmartPark account</p>
-
+  <form id="loginForm" action="/login" method="POST">
     <div class="field">
-      <label for="email">EMAIL</label>
+      <label for="email">EMAIL ADDRESS</label>
       <div class="input-wrap">
         <span class="input-icon">✉️</span>
         <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email">
       </div>
+      <div class="field-error" id="emailErr">Please enter your email</div>
     </div>
 
     <div class="field">
@@ -253,73 +204,50 @@ input.invalid{
       <div class="input-wrap">
         <span class="input-icon">🔒</span>
         <input id="password" name="password" type="password" placeholder="Your password" autocomplete="current-password">
-        <span class="eye" id="eyeBtn" onclick="toggle()">👁</span>
+        <span class="eye" id="eyeBtn" onclick="togglePw()">👁</span>
       </div>
+      <div class="field-error" id="passErr">Please enter your password</div>
     </div>
 
     <button type="submit" class="btn" id="loginBtn">Login →</button>
-    <p id="error"></p>
-
-    <div class="link">
-      <a href="/signup">Create account</a>
-    </div>
-
   </form>
 
+  <div class="link"><a href="/signup">Don't have an account? Sign up</a></div>
 </div>
 
 <script>
-function toggle(){
+function togglePw(){
   const p = document.getElementById('password');
   p.type = p.type === 'password' ? 'text' : 'password';
   document.getElementById('eyeBtn').textContent = p.type === 'password' ? '👁' : '🙈';
 }
 
-function addRipple(btn, e) {
-  const r = document.createElement('span');
-  r.className = 'ripple';
-  const rect = btn.getBoundingClientRect();
-  const size = Math.max(rect.width, rect.height);
-  r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px`;
-  btn.appendChild(r);
-  setTimeout(() => r.remove(), 600);
-}
-
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const btn = document.getElementById('loginBtn');
-  const err = document.getElementById('error');
+document.getElementById('loginForm').addEventListener('submit', function(e){
   const emailEl = document.getElementById('email');
-  const passwordEl = document.getElementById('password');
-
-  addRipple(btn, e);
-
-  // Client-side validation
+  const passEl  = document.getElementById('password');
   let bad = false;
-  [emailEl, passwordEl].forEach(el => {
-    if (!el.value.trim()) {
-      el.classList.add('invalid');
-      setTimeout(() => el.classList.remove('invalid'), 400);
-      bad = true;
-    }
-  });
 
-  if (bad) {
-    err.textContent = 'Please fill all fields';
-    err.style.display = 'block';
-    return;
+  if(!emailEl.value.trim()){
+    emailEl.classList.add('invalid');
+    document.getElementById('emailErr').classList.add('show');
+    setTimeout(()=>emailEl.classList.remove('invalid'),400);
+    bad = true;
+  } else {
+    document.getElementById('emailErr').classList.remove('show');
   }
 
-  err.style.display = 'none';
-  btn.classList.add('loading');
+  if(!passEl.value.trim()){
+    passEl.classList.add('invalid');
+    document.getElementById('passErr').classList.add('show');
+    setTimeout(()=>passEl.classList.remove('invalid'),400);
+    bad = true;
+  } else {
+    document.getElementById('passErr').classList.remove('show');
+  }
 
-  // Play success animation, then submit form normally to Flask
-  setTimeout(() => {
-    btn.classList.remove('loading');
-    document.getElementById('successOverlay').classList.add('show');
-    setTimeout(() => this.submit(), 900);
-  }, 1400);
+  if(bad){ e.preventDefault(); return; }
+
+  document.getElementById('loginBtn').classList.add('loading');
 });
 </script>
 </body>

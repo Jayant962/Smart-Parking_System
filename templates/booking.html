@@ -45,11 +45,16 @@ body{
   font-weight:700;color:#fff;font-size:13px;
   box-shadow:0 0 14px rgba(10,132,255,0.4);
 }
-.brand-name{
-  font-family:'Bebas Neue';font-size:19px;letter-spacing:2.5px;
-  color:var(--text);
-}
+.brand-name{font-family:'Bebas Neue';font-size:19px;letter-spacing:2.5px;color:var(--text);}
 .brand-name span{color:var(--accent2);}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.user-pill{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--text);
+  background:rgba(10,132,255,0.1);
+  border:1px solid rgba(10,132,255,0.2);
+  padding:5px 12px;border-radius:20px;
+}
 .status-pill{
   display:flex;align-items:center;gap:6px;
   font-size:12px;color:var(--muted);
@@ -58,6 +63,14 @@ body{
   padding:4px 12px;border-radius:20px;
 }
 .dot{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);}
+.logout-btn{
+  font-size:11px;color:var(--muted);
+  background:transparent;border:1px solid var(--border);
+  padding:4px 10px;border-radius:8px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  transition:all .15s;
+}
+.logout-btn:hover{color:var(--text);border-color:rgba(10,132,255,0.3);}
 
 /* ── LAYOUT ── */
 .main{
@@ -81,7 +94,7 @@ body{
   background:var(--card);
   border:1px solid var(--border);
   border-radius:10px;padding:3px;
-  width:fit-content;margin-bottom:16px;gap:0;
+  width:fit-content;margin-bottom:16px;
 }
 .vbtn{
   padding:7px 20px;border:none;border-radius:7px;
@@ -152,7 +165,6 @@ body{
   padding:22px 24px;
   display:flex;flex-direction:column;gap:18px;
   background:var(--card2);
-  border-left:1px solid var(--border);
 }
 .sec-title{
   font-size:10px;font-weight:700;letter-spacing:1px;
@@ -161,7 +173,6 @@ body{
 }
 .sec-title::before{content:'';width:2px;height:12px;border-radius:1px;background:var(--accent);display:block;}
 
-/* slot preview */
 .slot-preview{
   background:var(--card);border:1px solid var(--border);
   border-radius:10px;padding:12px 14px;min-height:56px;
@@ -171,7 +182,6 @@ body{
 .slot-id{font-family:'Bebas Neue';font-size:26px;color:var(--accent2);letter-spacing:1.5px;line-height:1;}
 .slot-meta{font-size:11px;color:var(--muted);margin-top:3px;}
 
-/* time */
 .time-label{font-size:10px;font-weight:700;letter-spacing:.8px;color:var(--muted);margin-bottom:4px;display:block;}
 .time-input{
   width:100%;padding:8px 11px;
@@ -184,9 +194,8 @@ body{
 .time-input:focus{border-color:rgba(10,132,255,0.5);}
 .time-input::-webkit-calendar-picker-indicator{filter:invert(.5) sepia(1) saturate(2) hue-rotate(180deg);opacity:.7;}
 
-/* end type toggle */
 .end-toggle{
-  display:flex;gap:0;
+  display:flex;
   background:rgba(10,25,45,0.7);
   border:1px solid var(--border);
   border-radius:8px;padding:3px;margin-bottom:8px;
@@ -200,7 +209,6 @@ body{
 .etbtn.active{background:rgba(10,132,255,0.3);color:var(--accent2);border:1px solid rgba(10,132,255,0.25);}
 .etbtn:hover:not(.active){color:var(--text);}
 
-/* notes */
 .info-note{
   font-size:11px;line-height:1.5;
   border-radius:8px;padding:8px 11px;
@@ -210,7 +218,6 @@ body{
 .flex-note{display:none;}
 .flex-note.show{display:block;}
 
-/* advance */
 .advance-card{
   background:var(--card);border:1px solid var(--border);
   border-radius:10px;padding:12px 14px;
@@ -220,7 +227,6 @@ body{
 .adv-val{font-family:'Bebas Neue';font-size:26px;color:var(--accent2);letter-spacing:1px;}
 .adv-sub{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4;}
 
-/* pay button */
 .pay-btn{
   width:100%;padding:13px;
   border:none;border-radius:10px;
@@ -258,10 +264,7 @@ body{
 .gpay-title{font-family:'Bebas Neue';font-size:1.6rem;letter-spacing:2px;margin-bottom:4px;}
 .gpay-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
 .gpay-img{width:100%;border-radius:10px;border:1px solid var(--border);}
-.gpay-amt{
-  font-family:'Bebas Neue';font-size:2rem;color:var(--accent2);
-  letter-spacing:1px;margin:14px 0 4px;
-}
+.gpay-amt{font-family:'Bebas Neue';font-size:2rem;color:var(--accent2);letter-spacing:1px;margin:14px 0 4px;}
 .gpay-hint{font-size:11px;color:var(--muted);margin-bottom:16px;}
 .gpay-confirm{
   width:100%;padding:11px;
@@ -274,6 +277,7 @@ body{
   margin-bottom:8px;
 }
 .gpay-confirm:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.gpay-confirm:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .gpay-close{
   width:100%;padding:9px;
   border:1px solid var(--border);border-radius:8px;
@@ -303,10 +307,8 @@ body{
   border-radius:14px;padding:18px 32px;margin-top:10px;min-width:240px;
 }
 .suc-slot{font-family:'Bebas Neue';font-size:2.2rem;color:var(--accent2);letter-spacing:2px;}
-.suc-info{font-size:12px;color:var(--muted);margin-top:4px;}
-.suc-adv{font-size:15px;font-weight:700;color:var(--success);margin-top:10px;}
 .close-btn{
-  margin-top:12px;padding:9px 28px;
+  margin-top:4px;padding:9px 28px;
   border:1px solid var(--border);border-radius:8px;
   background:transparent;color:var(--muted);
   font-family:'DM Sans',sans-serif;font-size:13px;
@@ -314,9 +316,8 @@ body{
 }
 .close-btn:hover{background:rgba(255,255,255,0.06);color:var(--text);}
 
-/* ── RESPONSIVE ── */
 @media(max-width:820px){
-  .main{grid-template-columns:1fr;grid-template-rows:auto auto;}
+  .main{grid-template-columns:1fr;}
   .right-panel{border-top:1px solid var(--border);}
 }
 </style>
@@ -329,9 +330,10 @@ body{
     <div class="brand-box">P</div>
     <div class="brand-name">SMART<span>PARK</span></div>
   </div>
-  <div class="status-pill">
-    <div class="dot"></div>
-    <span>Open Now</span>
+  <div class="topbar-right">
+    <div class="user-pill">👤 {{ user_name }}</div>
+    <div class="status-pill"><div class="dot"></div><span>Open Now</span></div>
+    <a href="/logout"><button class="logout-btn">Logout</button></a>
   </div>
 </div>
 
@@ -343,7 +345,7 @@ body{
     <img class="gpay-img" src="{{ url_for('static', filename='google_pay.jpeg') }}" alt="Google Pay QR Code">
     <div class="gpay-amt" id="gpayAmtDisplay">₹—</div>
     <p class="gpay-hint">After payment, tap the button below to confirm</p>
-    <button class="gpay-confirm" onclick="confirmPayment()">✅ I've Paid — Confirm Booking</button>
+    <button class="gpay-confirm" id="gpayConfirmBtn" onclick="confirmPayment()">✅ I've Paid — Confirm Booking</button>
     <button class="gpay-close" onclick="closeGpay()">✕ Cancel</button>
   </div>
 </div>
@@ -355,7 +357,6 @@ body{
   <p class="suc-sub">Your parking slip is ready</p>
 
   <div class="suc-card" style="min-width:300px;text-align:left;">
-    <!-- Header -->
     <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed rgba(30,100,180,0.25);padding-bottom:10px;margin-bottom:12px;">
       <div>
         <div style="font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:2px;color:var(--accent2);">SMARTPARK</div>
@@ -367,11 +368,10 @@ body{
       </div>
     </div>
 
-    <!-- Slot -->
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
       <div style="background:rgba(10,132,255,0.15);border:1px solid rgba(10,132,255,0.3);border-radius:8px;padding:8px 14px;text-align:center;">
         <div style="font-size:9px;color:var(--muted);letter-spacing:1px;">SLOT</div>
-        <div class="suc-slot" id="sucSlotId" style="font-size:2rem;">—</div>
+        <div class="suc-slot" id="sucSlotId">—</div>
       </div>
       <div>
         <div style="font-size:12px;color:var(--text);font-weight:600;" id="sucVehicle">—</div>
@@ -379,7 +379,6 @@ body{
       </div>
     </div>
 
-    <!-- Time Row -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
       <div style="background:rgba(10,25,50,0.5);border-radius:7px;padding:8px 10px;">
         <div style="font-size:9px;color:var(--muted);letter-spacing:.8px;margin-bottom:3px;">START</div>
@@ -393,7 +392,6 @@ body{
       </div>
     </div>
 
-    <!-- Duration + Amount -->
     <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px dashed rgba(30,100,180,0.25);padding-top:10px;">
       <div>
         <div style="font-size:9px;color:var(--muted);letter-spacing:.8px;">DURATION</div>
@@ -416,7 +414,6 @@ body{
 
 <!-- MAIN -->
 <div class="main">
-
   <!-- LEFT -->
   <div class="left-panel">
     <div class="panel-title">Select Parking Slot</div>
@@ -433,13 +430,13 @@ body{
       <div class="leg"><div class="leg-box lb-taken"></div>Occupied</div>
     </div>
 
-    <div class="grid-wrap" id="gridWrap"></div>
+    <div class="grid-wrap" id="gridWrap">
+      <div style="color:var(--muted);font-size:12px;padding:12px;">Loading slots…</div>
+    </div>
   </div>
 
   <!-- RIGHT -->
   <div class="right-panel">
-
-    <!-- Selected Slot -->
     <div>
       <div class="sec-title">SELECTED SLOT</div>
       <div class="slot-preview">
@@ -451,7 +448,6 @@ body{
       </div>
     </div>
 
-    <!-- Booking Time -->
     <div>
       <div class="sec-title">BOOKING TIME</div>
       <div style="display:flex;flex-direction:column;gap:10px;">
@@ -475,11 +471,10 @@ body{
         </div>
       </div>
       <div class="info-note note-blue" style="margin-top:10px;">
-        ℹ️ Booking starts 1 hr from now. Max duration is 24 hrs — rebook after that.
+        ℹ️ Booking starts 1 hr from now. Max duration is 24 hrs.
       </div>
     </div>
 
-    <!-- Advance Payment -->
     <div>
       <div class="sec-title">ADVANCE PAYMENT</div>
       <div class="advance-card">
@@ -487,15 +482,13 @@ body{
           <span class="label">Pay now</span>
           <span class="adv-val" id="advanceAmt">—</span>
         </div>
-        <div class="adv-sub">Formula: min(booking cost, ₹50). Remaining balance calculated by guard at exit based on actual duration.</div>
+        <div class="adv-sub">Formula: min(booking cost, ₹50). Remaining balance calculated by guard at exit.</div>
       </div>
     </div>
 
-    <!-- Pay Button -->
     <button class="pay-btn" id="payBtn" disabled onclick="handlePay()">
       🔒 Select Slot &amp; Time to Pay
     </button>
-
   </div>
 </div>
 
@@ -504,21 +497,29 @@ body{
 let selectedSlot = null;
 let vehicleType  = '4w';
 let endType      = 'fixed';
-
-// Pre-occupied slots (slot numbers, 1-indexed)
-const taken4w = [2,5,9,14,17,21,25,28,33,36,40,44,48,52,57,60,65,68,72,78,82,86,90,95,100,105,108,112];
-const taken2w = [3,7,12,18,22,30,35,40,44,50,55,62,68,72,77,83,88,94,100,106,112,118,124,130,138];
+let occupiedSlots = { '4w': [], '2w': [] };  // Loaded from DB
 
 const cfg = {
-  '4w': { rows: 10, cols: 12, slotW: 42, slotH: 28, gap: 5, label: '4-Wheeler Bay' },
-  '2w': { rows: 12, cols: 13, slotW: 28, slotH: 36, gap: 4, label: '2-Wheeler Bay' }
+  '4w': { rows: 10, cols: 12, slotW: 42, slotH: 28, gap: 5 },
+  '2w': { rows: 12, cols: 13, slotW: 28, slotH: 36, gap: 4 }
 };
+
+// ── LOAD OCCUPIED SLOTS FROM DB ──
+async function loadOccupiedSlots() {
+  try {
+    const res = await fetch('/api/occupied-slots');
+    occupiedSlots = await res.json();
+  } catch(e) {
+    occupiedSlots = { '4w': [], '2w': [] };
+  }
+  renderGrid();
+}
 
 // ── RENDER GRID ──
 function renderGrid() {
   const wrap  = document.getElementById('gridWrap');
   const c     = cfg[vehicleType];
-  const taken = vehicleType === '4w' ? taken4w : taken2w;
+  const taken = occupiedSlots[vehicleType] || [];
   wrap.innerHTML = '';
 
   const cl = document.createElement('div');
@@ -533,7 +534,6 @@ function renderGrid() {
   }
   wrap.appendChild(cl);
 
-  let n = 1;
   for (let r = 0; r < c.rows; r++) {
     if (r > 0 && r % 2 === 0) {
       const aisle = document.createElement('div');
@@ -562,14 +562,13 @@ function renderGrid() {
       const sp = document.createElement('span'); sp.className = 'slot-num'; sp.textContent = id;
       el.appendChild(sp);
 
-      if (taken.includes(n)) {
+      if (taken.includes(id)) {
         el.classList.add('taken');
         el.title = 'Occupied';
       } else {
         el.addEventListener('click', () => selectSlot(el));
         el.title = 'Slot ' + id;
       }
-      n++;
       sr.appendChild(el);
     }
     rw.appendChild(sr);
@@ -592,7 +591,6 @@ function selectSlot(el) {
   updateSummary();
 }
 
-// ── VEHICLE TYPE ──
 function setVehicle(t) {
   vehicleType = t;
   selectedSlot = null;
@@ -604,7 +602,6 @@ function setVehicle(t) {
   updateSummary();
 }
 
-// ── END TIME TYPE ──
 function setEndType(t) {
   endType = t;
   document.getElementById('fixedBtn').classList.toggle('active', t === 'fixed');
@@ -614,7 +611,6 @@ function setEndType(t) {
   updateSummary();
 }
 
-// ── COST CALC ──
 function calcCost(sv, ev, flex) {
   if (!sv) return null;
   const start = new Date(sv);
@@ -640,7 +636,6 @@ function calcCost(sv, ev, flex) {
 function fmtTime(d) { return d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }); }
 function fmtDate(d) { return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); }
 
-// ── UPDATE SUMMARY ──
 function updateSummary() {
   const sv   = document.getElementById('startTime').value;
   const ev   = document.getElementById('endTime').value;
@@ -657,7 +652,7 @@ function updateSummary() {
     : '🔒 Select Slot & Time to Pay';
 }
 
-// ── HANDLE PAY — opens Google Pay modal ──
+// ── HANDLE PAY ──
 function handlePay() {
   const sv   = document.getElementById('startTime').value;
   const ev   = document.getElementById('endTime').value;
@@ -665,39 +660,76 @@ function handlePay() {
   const c    = calcCost(sv, ev, flex);
   if (!c || !selectedSlot) return;
 
-  // Store pending cost for confirmation step
   window._pendingCost = c;
-
-  // Show amount in modal and open it
   document.getElementById('gpayAmtDisplay').textContent = '₹' + c.advance;
   document.getElementById('gpayModal').classList.add('show');
 }
 
-// ── CLOSE GPAY MODAL ──
 function closeGpay() {
   document.getElementById('gpayModal').classList.remove('show');
 }
 
-// ── CONFIRM PAYMENT — shows booking success ──
-function confirmPayment() {
+// ── CONFIRM PAYMENT — saves to DB then shows success ──
+async function confirmPayment() {
   const c = window._pendingCost;
   if (!c || !selectedSlot) return;
-  closeGpay();
 
-  // Booking reference
-  const ref = 'SP' + Date.now().toString().slice(-6);
+  const confirmBtn = document.getElementById('gpayConfirmBtn');
+  confirmBtn.disabled = true;
+  confirmBtn.textContent = 'Saving booking…';
+
+  try {
+    const res = await fetch('/api/book', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        slot_id: selectedSlot,
+        vehicle_type: vehicleType,
+        start_time: c.start.toISOString(),
+        end_time: endType === 'flexible' ? null : c.end.toISOString(),
+        end_type: endType,
+        advance_paid: c.advance
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'Booking failed. Slot may have been taken.');
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = '✅ I\'ve Paid — Confirm Booking';
+      closeGpay();
+      await loadOccupiedSlots(); // refresh grid
+      selectedSlot = null;
+      document.getElementById('slotNone').style.display = 'block';
+      document.getElementById('slotInfo').style.display = 'none';
+      updateSummary();
+      return;
+    }
+
+    closeGpay();
+    showSuccess(data.booking_ref, c);
+
+    // Mark slot as taken in local state
+    if (!occupiedSlots[vehicleType]) occupiedSlots[vehicleType] = [];
+    occupiedSlots[vehicleType].push(selectedSlot);
+
+  } catch(e) {
+    alert('Network error. Please try again.');
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = '✅ I\'ve Paid — Confirm Booking';
+  }
+}
+
+function showSuccess(ref, c) {
   document.getElementById('sucRef').textContent = ref;
-
-  // Slot & vehicle
   document.getElementById('sucSlotId').textContent = selectedSlot;
   document.getElementById('sucVehicle').textContent =
     vehicleType === '4w' ? '4-Wheeler Bay' : '2-Wheeler Bay';
 
-  // Start time
   document.getElementById('sucStart').textContent = fmtTime(c.start);
   document.getElementById('sucStartDate').textContent = fmtDate(c.start);
 
-  // End time
   if (endType === 'flexible') {
     document.getElementById('sucEnd').textContent = 'Flexible';
     document.getElementById('sucEndDate').textContent = 'Exit within 24 hrs';
@@ -706,11 +738,9 @@ function confirmPayment() {
     document.getElementById('sucEndDate').textContent = fmtDate(c.end);
   }
 
-  // Duration
   document.getElementById('sucDuration').textContent =
     endType === 'flexible' ? 'Up to 24 hrs' : c.hrs + (c.hrs === 1 ? ' hr' : ' hrs');
 
-  // Advance + note
   document.getElementById('sucAdv').textContent = '₹' + c.advance;
   document.getElementById('sucNote').textContent =
     c.total > c.advance
@@ -720,7 +750,6 @@ function confirmPayment() {
   document.getElementById('successOverlay').classList.add('show');
 }
 
-// ── RESET ──
 function resetAll() {
   selectedSlot = null;
   window._pendingCost = null;
@@ -728,11 +757,14 @@ function resetAll() {
   document.getElementById('gpayModal').classList.remove('show');
   document.getElementById('slotNone').style.display = 'block';
   document.getElementById('slotInfo').style.display  = 'none';
-  document.querySelectorAll('.slot.selected').forEach(s => s.classList.remove('selected'));
+  document.getElementById('gpayConfirmBtn').disabled = false;
+  document.getElementById('gpayConfirmBtn').textContent = '✅ I\'ve Paid — Confirm Booking';
+
+  // Reload fresh from DB
+  loadOccupiedSlots();
   updateSummary();
 }
 
-// ── DEFAULT TIMES ──
 function setDefaultTimes() {
   const now   = new Date(); now.setSeconds(0, 0);
   const start = new Date(now.getTime() + 3600000);
@@ -747,7 +779,6 @@ function setDefaultTimes() {
   ei.max   = max.toISOString().slice(0, 16);
 }
 
-// ── EVENTS ──
 document.getElementById('startTime').addEventListener('change', function () {
   const sv = this.value;
   if (sv) {
@@ -761,16 +792,13 @@ document.getElementById('startTime').addEventListener('change', function () {
   updateSummary();
 });
 document.getElementById('endTime').addEventListener('change', updateSummary);
-
-// Close modal on backdrop click
 document.getElementById('gpayModal').addEventListener('click', function(e) {
   if (e.target === this) closeGpay();
 });
 
 // ── INIT ──
 setDefaultTimes();
-renderGrid();
-updateSummary();
+loadOccupiedSlots();  // Fetches occupied from DB, then renders grid
 </script>
 </body>
 </html>
