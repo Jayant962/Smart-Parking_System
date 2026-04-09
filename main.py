@@ -125,79 +125,21 @@ def forgot_password():
             msg["From"]    = sender_email
             msg["To"]      = email
 
-            html_body = f"""
-<!DOCTYPE html>
-<html>
-<body style="margin:0;padding:0;background:#0b1622;font-family:'DM Sans',sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0">
-    <tr>
-      <td align="center" style="padding:40px 20px;">
-        <table width="480" cellpadding="0" cellspacing="0"
-               style="background:#111e2d;border-radius:16px;
-                      border:1px solid rgba(10,132,255,0.2);
-                      padding:36px 40px;">
-          <tr>
-            <td>
-              <!-- Brand -->
-              <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-                <tr>
-                  <td style="background:#0a84ff;width:36px;height:36px;border-radius:9px;
-                              text-align:center;vertical-align:middle;">
-                    <span style="color:#fff;font-weight:700;font-size:14px;">P</span>
-                  </td>
-                  <td style="padding-left:10px;font-size:18px;letter-spacing:2px;
-                              color:#ddeeff;font-weight:700;">
-                    SMART<span style="color:#30b0ff;">PARK</span>
-                  </td>
-                </tr>
-              </table>
+            body = f"""Hi {user.name},
 
-              <h2 style="color:#ddeeff;font-size:22px;margin:0 0 6px 0;">
-                Password Recovery
-              </h2>
-              <p style="color:#5a7a9a;font-size:13px;margin:0 0 24px 0;">
-                Hi <strong style="color:#ddeeff;">{user.name}</strong>, here is your password as requested.
-              </p>
+            You requested your SmartPark password. Here it is:
 
-              <!-- Password box -->
-              <div style="background:#0b1622;border:1px solid rgba(10,132,255,0.35);
-                          border-radius:12px;padding:18px 24px;margin-bottom:24px;
-                          text-align:center;">
-                <p style="color:#5a7a9a;font-size:10px;letter-spacing:1px;
-                           text-transform:uppercase;margin:0 0 8px 0;">YOUR PASSWORD</p>
-                <p style="color:#fff;font-size:22px;letter-spacing:3px;
-                           font-weight:600;margin:0;">{user.password}</p>
-              </div>
+            {user.password}
 
-              <p style="color:#5a7a9a;font-size:12px;line-height:1.6;margin:0 0 20px 0;">
-                If you did not request this, please ignore this email.
-                For security, consider changing your password after logging in.
-              </p>
+            If you didn't request this, just ignore this email.
 
-              <!-- CTA button -->
-              <a href="http://127.0.0.1:5000/login"
-                 style="display:inline-block;background:linear-gradient(135deg,#30b0ff,#0a84ff);
-                         color:#fff;text-decoration:none;padding:12px 28px;
-                         border-radius:10px;font-size:14px;font-weight:700;
-                         letter-spacing:.3px;">
-                Login to SmartPark →
-              </a>
-
-              <hr style="border:none;border-top:1px solid rgba(30,100,180,0.15);margin:28px 0 16px 0;">
-              <p style="color:#3a5a7a;font-size:11px;margin:0;">
-                © SmartPark. This is an automated message, please do not reply.
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
+            — SmartPark
             """
 
-            msg.attach(MIMEText(html_body, "html"))
+            msg.attach(MIMEText(body, "plain"))
+
+
+            msg.attach(MIMEText(body, "html"))
 
             with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
                 server.login(sender_email, sender_pass)
