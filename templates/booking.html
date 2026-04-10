@@ -20,107 +20,40 @@
   --warn:#f59e0b;
 }
 html,body{height:100%;}
-body{
-  min-height:100vh;
-  background:var(--bg);
-  font-family:'DM Sans',sans-serif;
-  color:var(--text);
-  overflow-x:hidden;
-}
+body{min-height:100vh;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);overflow-x:hidden;}
 
-/* ── TOPBAR ── */
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:13px 28px;
-  background:rgba(11,22,34,0.97);
-  border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:100;
-  backdrop-filter:blur(10px);
-}
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:13px 28px;background:rgba(11,22,34,0.97);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);}
 .brand{display:flex;align-items:center;gap:9px;}
-.brand-box{
-  width:30px;height:30px;border-radius:8px;
-  background:var(--accent);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:700;color:#fff;font-size:13px;
-  box-shadow:0 0 14px rgba(10,132,255,0.4);
-}
+.brand-box{width:30px;height:30px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:13px;box-shadow:0 0 14px rgba(10,132,255,0.4);}
 .brand-name{font-family:'Bebas Neue';font-size:19px;letter-spacing:2.5px;color:var(--text);}
 .brand-name span{color:var(--accent2);}
-.topbar-right{display:flex;align-items:center;gap:12px;}
-.user-pill{
-  display:flex;align-items:center;gap:6px;
-  font-size:12px;color:var(--text);
-  background:rgba(10,132,255,0.1);
-  border:1px solid rgba(10,132,255,0.2);
-  padding:5px 12px;border-radius:20px;
-}
-.status-pill{
-  display:flex;align-items:center;gap:6px;
-  font-size:12px;color:var(--muted);
-  background:rgba(10,132,255,0.08);
-  border:1px solid rgba(10,132,255,0.18);
-  padding:4px 12px;border-radius:20px;
-}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.user-pill{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text);background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.2);padding:5px 12px;border-radius:20px;}
+.code-pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--warn);background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);padding:5px 12px;border-radius:20px;font-family:'Bebas Neue';}
+.code-pill span{font-size:9px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400;letter-spacing:0;}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);}
-.logout-btn{
-  font-size:11px;color:var(--muted);
-  background:transparent;border:1px solid var(--border);
-  padding:4px 10px;border-radius:8px;cursor:pointer;
-  font-family:'DM Sans',sans-serif;
-  transition:all .15s;
-}
+.logout-btn{font-size:11px;color:var(--muted);background:transparent;border:1px solid var(--border);padding:4px 10px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
 .logout-btn:hover{color:var(--text);border-color:rgba(10,132,255,0.3);}
 
-/* ── LAYOUT ── */
-.main{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  min-height:calc(100vh - 57px);
-}
+/* LAYOUT */
+.main{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 57px);}
 
-/* ── LEFT ── */
-.left-panel{
-  padding:22px 24px;
-  border-right:1px solid var(--border);
-  overflow:auto;
-}
+/* LEFT */
+.left-panel{padding:22px 24px;border-right:1px solid var(--border);overflow:auto;}
 .panel-title{font-family:'Bebas Neue';font-size:1.4rem;letter-spacing:1.5px;margin-bottom:3px;}
 .panel-sub{color:var(--muted);font-size:12px;margin-bottom:16px;}
-
-/* vehicle toggle */
-.vtoggle{
-  display:flex;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;padding:3px;
-  width:fit-content;margin-bottom:16px;
-}
-.vbtn{
-  padding:7px 20px;border:none;border-radius:7px;
-  background:transparent;color:var(--muted);
-  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;
-  cursor:pointer;transition:all .16s;
-}
+.vtoggle{display:flex;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:3px;width:fit-content;margin-bottom:16px;}
+.vbtn{padding:7px 20px;border:none;border-radius:7px;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .16s;}
 .vbtn.active{background:var(--accent);color:#fff;box-shadow:0 2px 10px rgba(10,132,255,0.4);}
 .vbtn:hover:not(.active){color:var(--text);background:rgba(255,255,255,0.05);}
-
-/* legend */
 .legend{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
 .leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
 .leg-box{width:14px;height:10px;border-radius:2px;border:1px solid transparent;flex-shrink:0;}
 .lb-empty{background:rgba(20,50,90,0.7);border-color:rgba(30,100,180,0.3);}
 .lb-sel{background:var(--accent);border-color:var(--accent2);}
 .lb-taken{background:rgba(60,20,20,0.8);border-color:rgba(140,50,50,0.5);}
-
-/* grid */
-.grid-wrap{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:16px 14px;
-  overflow:auto;
-}
+.grid-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 14px;overflow:auto;}
 .col-labels{display:flex;margin-bottom:5px;padding-left:26px;}
 .col-label{font-size:10px;color:var(--muted);font-weight:600;text-align:center;flex-shrink:0;letter-spacing:.4px;}
 .row-label-wrap{display:flex;align-items:stretch;}
@@ -129,202 +62,140 @@ body{
 .aisle{height:12px;display:flex;align-items:center;margin-bottom:4px;padding-left:28px;}
 .aisle-line{flex:1;border-top:1.5px dashed rgba(30,100,180,0.2);}
 .aisle-label{font-size:9px;color:rgba(30,130,220,0.35);letter-spacing:1px;font-weight:600;white-space:nowrap;padding:0 6px;}
-.slot{
-  border-radius:3px;
-  border:1px solid rgba(30,100,180,0.25);
-  background:rgba(15,35,65,0.7);
-  cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-  transition:background .12s,border-color .12s,transform .12s;
-}
+.slot{border-radius:3px;border:1px solid rgba(30,100,180,0.25);background:rgba(15,35,65,0.7);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .12s,border-color .12s,transform .12s;}
 .slot-num{font-size:9px;font-weight:600;color:rgba(80,130,190,0.55);pointer-events:none;transition:color .1s;}
-.slot:hover:not(.taken){
-  background:rgba(10,100,220,0.28);
-  border-color:var(--accent2);
-  transform:scale(1.08);
-  z-index:2;
-}
+.slot:hover:not(.taken){background:rgba(10,100,220,0.28);border-color:var(--accent2);transform:scale(1.08);z-index:2;}
 .slot:hover:not(.taken) .slot-num{color:rgba(160,210,255,0.9);}
-.slot.selected{
-  background:rgba(10,132,255,0.55);
-  border-color:var(--accent2);
-  box-shadow:0 0 0 2px rgba(10,132,255,0.25);
-  transform:scale(1.05);
-}
+.slot.selected{background:rgba(10,132,255,0.55);border-color:var(--accent2);box-shadow:0 0 0 2px rgba(10,132,255,0.25);transform:scale(1.05);}
 .slot.selected .slot-num{color:#fff;}
-.slot.taken{
-  background:rgba(60,20,20,0.7);
-  border-color:rgba(130,50,50,0.4);
-  cursor:not-allowed;
-}
+.slot.taken{background:rgba(60,20,20,0.7);border-color:rgba(130,50,50,0.4);cursor:not-allowed;}
 .slot.taken .slot-num{color:rgba(140,70,70,0.55);}
 
-/* ── RIGHT ── */
-.right-panel{
-  padding:22px 24px;
-  display:flex;flex-direction:column;gap:18px;
-  background:var(--card2);
-}
-.sec-title{
-  font-size:10px;font-weight:700;letter-spacing:1px;
-  color:var(--muted);margin-bottom:10px;
-  display:flex;align-items:center;gap:6px;
-}
+/* RIGHT */
+.right-panel{padding:22px 24px;display:flex;flex-direction:column;gap:18px;background:var(--card2);}
+.sec-title{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
 .sec-title::before{content:'';width:2px;height:12px;border-radius:1px;background:var(--accent);display:block;}
-
-.slot-preview{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:10px;padding:12px 14px;min-height:56px;
-  display:flex;align-items:center;
-}
+.slot-preview{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;min-height:56px;display:flex;align-items:center;}
 .slot-none{color:var(--muted);font-size:12px;font-style:italic;}
 .slot-id{font-family:'Bebas Neue';font-size:26px;color:var(--accent2);letter-spacing:1.5px;line-height:1;}
 .slot-meta{font-size:11px;color:var(--muted);margin-top:3px;}
-
 .time-label{font-size:10px;font-weight:700;letter-spacing:.8px;color:var(--muted);margin-bottom:4px;display:block;}
-.time-input{
-  width:100%;padding:8px 11px;
-  background:rgba(10,25,45,0.8);
-  border:1px solid var(--border);
-  border-radius:8px;color:var(--text);
-  font-family:'DM Sans',sans-serif;font-size:12px;
-  outline:none;transition:border-color .18s;
-}
+.time-input{width:100%;padding:8px 11px;background:rgba(10,25,45,0.8);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;transition:border-color .18s;}
 .time-input:focus{border-color:rgba(10,132,255,0.5);}
 .time-input::-webkit-calendar-picker-indicator{filter:invert(.5) sepia(1) saturate(2) hue-rotate(180deg);opacity:.7;}
-
-.end-toggle{
-  display:flex;
-  background:rgba(10,25,45,0.7);
-  border:1px solid var(--border);
-  border-radius:8px;padding:3px;margin-bottom:8px;
-}
-.etbtn{
-  flex:1;padding:6px 0;border:none;border-radius:6px;
-  background:transparent;color:var(--muted);
-  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;
-  cursor:pointer;transition:all .15s;
-}
+.end-toggle{display:flex;background:rgba(10,25,45,0.7);border:1px solid var(--border);border-radius:8px;padding:3px;margin-bottom:8px;}
+.etbtn{flex:1;padding:6px 0;border:none;border-radius:6px;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;}
 .etbtn.active{background:rgba(10,132,255,0.3);color:var(--accent2);border:1px solid rgba(10,132,255,0.25);}
 .etbtn:hover:not(.active){color:var(--text);}
-
-.info-note{
-  font-size:11px;line-height:1.5;
-  border-radius:8px;padding:8px 11px;
-}
+.info-note{font-size:11px;line-height:1.5;border-radius:8px;padding:8px 11px;}
 .note-blue{color:rgba(100,180,255,0.85);background:rgba(10,80,180,0.12);border:1px solid rgba(10,100,200,0.2);}
 .note-amber{color:rgba(250,180,60,0.9);background:rgba(240,150,30,0.1);border:1px solid rgba(240,150,30,0.2);}
 .flex-note{display:none;}
 .flex-note.show{display:block;}
-
-.advance-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:10px;padding:12px 14px;
-}
+.advance-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
 .adv-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;}
 .adv-row .label{color:var(--muted);}
 .adv-val{font-family:'Bebas Neue';font-size:26px;color:var(--accent2);letter-spacing:1px;}
 .adv-sub{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4;}
-
-.pay-btn{
-  width:100%;padding:13px;
-  border:none;border-radius:10px;
-  background:linear-gradient(135deg,var(--accent2),var(--accent));
-  color:#fff;font-family:'DM Sans',sans-serif;
-  font-size:14px;font-weight:700;cursor:pointer;
-  position:relative;overflow:hidden;
-  box-shadow:0 4px 18px rgba(10,132,255,0.35);
-  transition:transform .15s,filter .15s;
-  margin-top:auto;letter-spacing:.2px;
-}
+.pay-btn{width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 4px 18px rgba(10,132,255,0.35);transition:transform .15s,filter .15s;margin-top:auto;letter-spacing:.2px;}
 .pay-btn:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px);}
 .pay-btn:active:not(:disabled){transform:scale(.98);}
 .pay-btn:disabled{opacity:.38;cursor:not-allowed;background:#1e3a5a;box-shadow:none;}
 
-/* ── GPAY MODAL ── */
-.gpay-modal{
-  position:fixed;inset:0;
-  background:rgba(8,17,28,0.92);
-  backdrop-filter:blur(16px);
-  display:none;
-  align-items:center;justify-content:center;
-  z-index:300;
-}
+/* GPAY MODAL */
+.gpay-modal{position:fixed;inset:0;background:rgba(8,17,28,0.92);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;z-index:300;}
 .gpay-modal.show{display:flex;animation:fadeIn .25s ease both;}
-.gpay-box{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:24px;
-  text-align:center;
-  max-width:340px;width:90%;
-  box-shadow:0 20px 60px rgba(0,0,0,0.6);
-}
+.gpay-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;max-width:340px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.6);}
 .gpay-title{font-family:'Bebas Neue';font-size:1.6rem;letter-spacing:2px;margin-bottom:4px;}
 .gpay-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
 .gpay-img{width:100%;border-radius:10px;border:1px solid var(--border);}
 .gpay-amt{font-family:'Bebas Neue';font-size:2rem;color:var(--accent2);letter-spacing:1px;margin:14px 0 4px;}
 .gpay-hint{font-size:11px;color:var(--muted);margin-bottom:16px;}
-.gpay-confirm{
-  width:100%;padding:11px;
-  border:none;border-radius:8px;
-  background:linear-gradient(135deg,var(--accent2),var(--accent));
-  color:#fff;font-family:'DM Sans',sans-serif;
-  font-size:13px;font-weight:700;cursor:pointer;
-  box-shadow:0 4px 14px rgba(10,132,255,0.35);
-  transition:filter .15s,transform .15s;
-  margin-bottom:8px;
-}
+.gpay-confirm{width:100%;padding:11px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(10,132,255,0.35);transition:filter .15s,transform .15s;margin-bottom:8px;}
 .gpay-confirm:hover{filter:brightness(1.1);transform:translateY(-1px);}
 .gpay-confirm:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-.gpay-close{
-  width:100%;padding:9px;
-  border:1px solid var(--border);border-radius:8px;
-  background:transparent;color:var(--muted);
-  font-family:'DM Sans',sans-serif;font-size:12px;
-  cursor:pointer;transition:all .15s;
-}
+.gpay-close{width:100%;padding:9px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;transition:all .15s;}
 .gpay-close:hover{background:rgba(255,255,255,0.06);color:var(--text);}
 
-/* ── SUCCESS ── */
-.success-overlay{
-  position:fixed;inset:0;
-  background:rgba(8,17,28,0.96);
-  backdrop-filter:blur(20px);
-  display:none;
-  flex-direction:column;align-items:center;justify-content:center;gap:10px;
-  z-index:400;text-align:center;padding:24px;
-}
+/* SUCCESS OVERLAY */
+.success-overlay{position:fixed;inset:0;background:rgba(8,17,28,0.96);backdrop-filter:blur(20px);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:400;text-align:center;padding:24px;overflow-y:auto;}
 .success-overlay.show{display:flex;animation:fadeIn .35s ease both;}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 .suc-icon{font-size:52px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both .08s;}
 @keyframes popIn{from{transform:scale(0) rotate(-10deg);}to{transform:scale(1) rotate(0);}}
 .suc-title{font-family:'Bebas Neue';font-size:2.4rem;letter-spacing:2px;color:var(--text);}
 .suc-sub{color:var(--muted);font-size:13px;}
-.suc-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;padding:18px 32px;margin-top:10px;min-width:240px;
+
+/* SLIP CARD */
+.slip-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:0;
+  margin-top:10px;
+  min-width:300px;
+  max-width:360px;
+  width:100%;
+  overflow:hidden;
 }
-.suc-slot{font-family:'Bebas Neue';font-size:2.2rem;color:var(--accent2);letter-spacing:2px;}
-.close-btn{
-  margin-top:4px;padding:9px 28px;
-  border:1px solid var(--border);border-radius:8px;
-  background:transparent;color:var(--muted);
-  font-family:'DM Sans',sans-serif;font-size:13px;
-  cursor:pointer;transition:all .15s;
+.slip-header{
+  background:linear-gradient(135deg, rgba(10,132,255,0.25), rgba(48,176,255,0.1));
+  border-bottom:1px solid var(--border);
+  padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
 }
+.slip-brand{font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:2px;color:var(--accent2);}
+.slip-sub{font-size:10px;color:var(--muted);}
+.slip-ref-box{text-align:right;}
+.slip-ref-label{font-size:9px;color:var(--muted);letter-spacing:.8px;}
+.slip-ref-val{font-family:'Bebas Neue';font-size:13px;color:var(--text);letter-spacing:1px;}
+
+/* ── USER CODE HERO ── */
+.slip-user-code-section{
+  background:linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.05));
+  border-bottom:1px dashed rgba(245,158,11,0.2);
+  padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.slip-uc-left .uc-label{font-size:9px;color:rgba(245,158,11,0.6);letter-spacing:2px;font-weight:700;margin-bottom:4px;}
+.slip-uc-left .uc-val{font-family:'Bebas Neue';font-size:2rem;color:#fbbf24;letter-spacing:3px;line-height:1;}
+.slip-uc-right{text-align:right;}
+.slip-uc-right .uc-hint{font-size:9px;color:var(--muted);line-height:1.5;max-width:120px;}
+
+.slip-body{padding:16px 20px;}
+.slip-slot-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.slip-slot-badge{background:rgba(10,132,255,0.15);border:1px solid rgba(10,132,255,0.3);border-radius:8px;padding:8px 14px;text-align:center;}
+.slip-slot-label{font-size:9px;color:var(--muted);letter-spacing:1px;}
+.slip-slot-val{font-family:'Bebas Neue';font-size:2rem;color:var(--accent2);letter-spacing:2px;line-height:1;}
+.slip-vehicle{font-size:12px;color:var(--text);font-weight:600;}
+.slip-floor{font-size:11px;color:var(--muted);}
+.slip-times{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.slip-time-box{background:rgba(10,25,50,0.5);border-radius:7px;padding:8px 10px;}
+.stb-label{font-size:9px;color:var(--muted);letter-spacing:.8px;margin-bottom:3px;}
+.stb-time{font-size:13px;font-weight:600;color:var(--text);}
+.stb-date{font-size:10px;color:var(--muted);}
+.slip-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px dashed rgba(30,100,180,0.25);padding-top:12px;}
+.sf-dur .sf-label{font-size:9px;color:var(--muted);letter-spacing:.8px;}
+.sf-dur .sf-val{font-size:13px;color:var(--text);font-weight:600;}
+.sf-pay .sf-label{font-size:9px;color:var(--muted);letter-spacing:.8px;text-align:right;}
+.sf-pay .sf-val{font-family:'Bebas Neue';font-size:1.6rem;color:var(--success);letter-spacing:1px;}
+.slip-note{font-size:10px;color:var(--muted);text-align:center;padding:8px 20px 14px;line-height:1.5;}
+
+.btn-row{display:flex;gap:10px;margin-top:4px;}
+.close-btn{padding:9px 20px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;}
 .close-btn:hover{background:rgba(255,255,255,0.06);color:var(--text);}
 
-@media(max-width:820px){
-  .main{grid-template-columns:1fr;}
-  .right-panel{border-top:1px solid var(--border);}
+@media(max-width:820px){.main{grid-template-columns:1fr;}.right-panel{border-top:1px solid var(--border);}}
+
+@media print {
+  body * { visibility: hidden; }
+  .slip-card, .slip-card * { visibility: visible; }
+  .slip-card { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 320px; }
 }
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="brand">
     <div class="brand-box">P</div>
@@ -332,12 +203,15 @@ body{
   </div>
   <div class="topbar-right">
     <div class="user-pill">👤 {{ user_name }}</div>
-    <div class="status-pill"><div class="dot"></div><span>Open Now</span></div>
+    <div class="code-pill"><span>YOUR ID:</span> {{ user_code }}</div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.18);padding:4px 12px;border-radius:20px;">
+      <div class="dot"></div><span>Open Now</span>
+    </div>
     <a href="/logout"><button class="logout-btn">Logout</button></a>
   </div>
 </div>
 
-<!-- GOOGLE PAY MODAL -->
+<!-- GPAY MODAL -->
 <div class="gpay-modal" id="gpayModal">
   <div class="gpay-box">
     <div class="gpay-title">Scan &amp; Pay</div>
@@ -354,59 +228,78 @@ body{
 <div class="success-overlay" id="successOverlay">
   <div class="suc-icon">🎉</div>
   <div class="suc-title">Booking Confirmed!</div>
-  <p class="suc-sub">Your parking slip is ready</p>
+  <p class="suc-sub">Show this slip to the parking guard on entry &amp; exit</p>
 
-  <div class="suc-card" style="min-width:300px;text-align:left;">
-    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed rgba(30,100,180,0.25);padding-bottom:10px;margin-bottom:12px;">
+  <div class="slip-card" id="slipCard">
+
+    <!-- Header -->
+    <div class="slip-header">
       <div>
-        <div style="font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:2px;color:var(--accent2);">SMARTPARK</div>
-        <div style="font-size:10px;color:var(--muted);">Parking Receipt</div>
+        <div class="slip-brand">SMARTPARK</div>
+        <div class="slip-sub">Parking Receipt</div>
       </div>
-      <div style="text-align:right;">
-        <div style="font-size:10px;color:var(--muted);">Booking Ref</div>
-        <div style="font-family:'Bebas Neue';font-size:14px;color:var(--text);letter-spacing:1px;" id="sucRef">—</div>
-      </div>
-    </div>
-
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-      <div style="background:rgba(10,132,255,0.15);border:1px solid rgba(10,132,255,0.3);border-radius:8px;padding:8px 14px;text-align:center;">
-        <div style="font-size:9px;color:var(--muted);letter-spacing:1px;">SLOT</div>
-        <div class="suc-slot" id="sucSlotId">—</div>
-      </div>
-      <div>
-        <div style="font-size:12px;color:var(--text);font-weight:600;" id="sucVehicle">—</div>
-        <div style="font-size:11px;color:var(--muted);">Ground Floor</div>
+      <div class="slip-ref-box">
+        <div class="slip-ref-label">BOOKING REF</div>
+        <div class="slip-ref-val" id="sucRef">—</div>
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-      <div style="background:rgba(10,25,50,0.5);border-radius:7px;padding:8px 10px;">
-        <div style="font-size:9px;color:var(--muted);letter-spacing:.8px;margin-bottom:3px;">START</div>
-        <div style="font-size:13px;font-weight:600;color:var(--text);" id="sucStart">—</div>
-        <div style="font-size:10px;color:var(--muted);" id="sucStartDate">—</div>
+    <!-- USER CODE — HERO ROW -->
+    <div class="slip-user-code-section">
+      <div class="slip-uc-left">
+        <div class="uc-label">YOUR USER ID</div>
+        <div class="uc-val" id="sucUserCode">—</div>
       </div>
-      <div style="background:rgba(10,25,50,0.5);border-radius:7px;padding:8px 10px;">
-        <div style="font-size:9px;color:var(--muted);letter-spacing:.8px;margin-bottom:3px;">END</div>
-        <div style="font-size:13px;font-weight:600;color:var(--text);" id="sucEnd">—</div>
-        <div style="font-size:10px;color:var(--muted);" id="sucEndDate">—</div>
+      <div class="slip-uc-right">
+        <div class="uc-hint">Show this ID to the guard.<br>Admin uses it for billing lookup.</div>
       </div>
     </div>
 
-    <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px dashed rgba(30,100,180,0.25);padding-top:10px;">
-      <div>
-        <div style="font-size:9px;color:var(--muted);letter-spacing:.8px;">DURATION</div>
-        <div style="font-size:13px;color:var(--text);font-weight:600;" id="sucDuration">—</div>
+    <!-- Body -->
+    <div class="slip-body">
+      <!-- Slot row -->
+      <div class="slip-slot-row">
+        <div class="slip-slot-badge">
+          <div class="slip-slot-label">SLOT</div>
+          <div class="slip-slot-val" id="sucSlotId">—</div>
+        </div>
+        <div>
+          <div class="slip-vehicle" id="sucVehicle">—</div>
+          <div class="slip-floor">Ground Floor</div>
+        </div>
       </div>
-      <div style="text-align:right;">
-        <div style="font-size:9px;color:var(--muted);letter-spacing:.8px;">ADVANCE PAID</div>
-        <div style="font-family:'Bebas Neue';font-size:1.6rem;color:var(--success);letter-spacing:1px;" id="sucAdv">—</div>
+
+      <!-- Times -->
+      <div class="slip-times">
+        <div class="slip-time-box">
+          <div class="stb-label">START</div>
+          <div class="stb-time" id="sucStart">—</div>
+          <div class="stb-date" id="sucStartDate">—</div>
+        </div>
+        <div class="slip-time-box">
+          <div class="stb-label">END</div>
+          <div class="stb-time" id="sucEnd">—</div>
+          <div class="stb-date" id="sucEndDate">—</div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="slip-footer">
+        <div class="sf-dur">
+          <div class="sf-label">DURATION</div>
+          <div class="sf-val" id="sucDuration">—</div>
+        </div>
+        <div class="sf-pay">
+          <div class="sf-label">ADVANCE PAID</div>
+          <div class="sf-val" id="sucAdv">—</div>
+        </div>
       </div>
     </div>
 
-    <div style="margin-top:8px;font-size:10px;color:var(--muted);text-align:center;line-height:1.5;" id="sucNote">Balance settled at exit by guard.</div>
+    <div class="slip-note" id="sucNote">Balance settled at exit by guard.</div>
   </div>
 
-  <div style="display:flex;gap:10px;margin-top:4px;">
+  <div class="btn-row">
     <button class="close-btn" onclick="window.print()">🖨 Print Slip</button>
     <button class="close-btn" onclick="resetAll()">Book Another</button>
   </div>
@@ -414,28 +307,23 @@ body{
 
 <!-- MAIN -->
 <div class="main">
-  <!-- LEFT -->
   <div class="left-panel">
     <div class="panel-title">Select Parking Slot</div>
     <p class="panel-sub">Click any available slot to reserve it</p>
-
     <div class="vtoggle">
       <button class="vbtn active" id="btn4w" onclick="setVehicle('4w')">🚗 4-Wheeler</button>
       <button class="vbtn" id="btn2w" onclick="setVehicle('2w')">🛵 2-Wheeler</button>
     </div>
-
     <div class="legend">
       <div class="leg"><div class="leg-box lb-empty"></div>Available</div>
       <div class="leg"><div class="leg-box lb-sel"></div>Selected</div>
       <div class="leg"><div class="leg-box lb-taken"></div>Occupied</div>
     </div>
-
     <div class="grid-wrap" id="gridWrap">
       <div style="color:var(--muted);font-size:12px;padding:12px;">Loading slots…</div>
     </div>
   </div>
 
-  <!-- RIGHT -->
   <div class="right-panel">
     <div>
       <div class="sec-title">SELECTED SLOT</div>
@@ -493,18 +381,19 @@ body{
 </div>
 
 <script>
-// ── STATE ──
+// Inject user_code from Flask
+const USER_CODE = "{{ user_code }}";
+
 let selectedSlot = null;
 let vehicleType  = '4w';
 let endType      = 'fixed';
-let occupiedSlots = { '4w': [], '2w': [] };  // Loaded from DB
+let occupiedSlots = { '4w': [], '2w': [] };
 
 const cfg = {
   '4w': { rows: 10, cols: 12, slotW: 42, slotH: 28, gap: 5 },
   '2w': { rows: 12, cols: 13, slotW: 28, slotH: 36, gap: 4 }
 };
 
-// ── LOAD OCCUPIED SLOTS FROM DB ──
 async function loadOccupiedSlots() {
   try {
     const res = await fetch('/api/occupied-slots');
@@ -515,7 +404,6 @@ async function loadOccupiedSlots() {
   renderGrid();
 }
 
-// ── RENDER GRID ──
 function renderGrid() {
   const wrap  = document.getElementById('gridWrap');
   const c     = cfg[vehicleType];
@@ -545,23 +433,18 @@ function renderGrid() {
       aisle.append(l1, al, l2);
       wrap.appendChild(aisle);
     }
-
     const rw = document.createElement('div'); rw.className = 'row-label-wrap';
     const rl = document.createElement('div'); rl.className = 'row-label'; rl.textContent = r + 1;
     rw.appendChild(rl);
-
     const sr = document.createElement('div'); sr.className = 'slots-row'; sr.style.gap = c.gap + 'px';
-
     for (let col = 0; col < c.cols; col++) {
       const id  = String.fromCharCode(65 + col) + (r + 1);
       const el  = document.createElement('div');
       el.className = 'slot';
       el.style.cssText = `width:${c.slotW}px;height:${c.slotH}px;`;
       el.dataset.slotId = id;
-
       const sp = document.createElement('span'); sp.className = 'slot-num'; sp.textContent = id;
       el.appendChild(sp);
-
       if (taken.includes(id)) {
         el.classList.add('taken');
         el.title = 'Occupied';
@@ -576,18 +459,15 @@ function renderGrid() {
   }
 }
 
-// ── SELECT SLOT ──
 function selectSlot(el) {
   document.querySelectorAll('.slot.selected').forEach(s => s.classList.remove('selected'));
   el.classList.add('selected');
   selectedSlot = el.dataset.slotId;
-
   document.getElementById('slotNone').style.display = 'none';
   document.getElementById('slotInfo').style.display = 'block';
   document.getElementById('slotIdDisplay').textContent  = 'Slot ' + selectedSlot;
   document.getElementById('slotMetaDisplay').textContent =
     vehicleType === '4w' ? '4-Wheeler Bay · Ground Floor' : '2-Wheeler Bay · Ground Floor';
-
   updateSummary();
 }
 
@@ -624,7 +504,7 @@ function calcCost(sv, ev, flex) {
   }
   const diffMs = end - start;
   if (diffMs > 24 * 3600000) return null;
-  const hrs = Math.ceil(diffMs / 3600000);
+  const hrs     = Math.ceil(diffMs / 3600000);
   if (hrs <= 0) return null;
   const base    = hrs <= 1 ? 20 : 20 + (hrs - 1) * 10;
   const flexFee = flex ? 20 : 0;
@@ -633,17 +513,15 @@ function calcCost(sv, ev, flex) {
   return { hrs, base, flexFee, total, advance, start, end };
 }
 
-function fmtTime(d) { return d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }); }
-function fmtDate(d) { return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); }
+function fmtTime(d){ return d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+function fmtDate(d){ return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'}); }
 
 function updateSummary() {
   const sv   = document.getElementById('startTime').value;
   const ev   = document.getElementById('endTime').value;
   const flex = endType === 'flexible';
   const c    = calcCost(sv, ev, flex);
-
   document.getElementById('advanceAmt').textContent = c ? '₹' + c.advance : '—';
-
   const ready = selectedSlot && c;
   const btn   = document.getElementById('payBtn');
   btn.disabled    = !ready;
@@ -652,28 +530,22 @@ function updateSummary() {
     : '🔒 Select Slot & Time to Pay';
 }
 
-// ── HANDLE PAY ──
 function handlePay() {
   const sv   = document.getElementById('startTime').value;
   const ev   = document.getElementById('endTime').value;
   const flex = endType === 'flexible';
   const c    = calcCost(sv, ev, flex);
   if (!c || !selectedSlot) return;
-
   window._pendingCost = c;
   document.getElementById('gpayAmtDisplay').textContent = '₹' + c.advance;
   document.getElementById('gpayModal').classList.add('show');
 }
 
-function closeGpay() {
-  document.getElementById('gpayModal').classList.remove('show');
-}
+function closeGpay(){ document.getElementById('gpayModal').classList.remove('show'); }
 
-// ── CONFIRM PAYMENT — saves to DB then shows success ──
 async function confirmPayment() {
   const c = window._pendingCost;
   if (!c || !selectedSlot) return;
-
   const confirmBtn = document.getElementById('gpayConfirmBtn');
   confirmBtn.disabled = true;
   confirmBtn.textContent = 'Saving booking…';
@@ -691,15 +563,14 @@ async function confirmPayment() {
         advance_paid: c.advance
       })
     });
-
     const data = await res.json();
 
     if (!res.ok) {
       alert(data.error || 'Booking failed. Slot may have been taken.');
       confirmBtn.disabled = false;
-      confirmBtn.textContent = '✅ I\'ve Paid — Confirm Booking';
+      confirmBtn.textContent = "✅ I've Paid — Confirm Booking";
       closeGpay();
-      await loadOccupiedSlots(); // refresh grid
+      await loadOccupiedSlots();
       selectedSlot = null;
       document.getElementById('slotNone').style.display = 'block';
       document.getElementById('slotInfo').style.display = 'none';
@@ -708,44 +579,39 @@ async function confirmPayment() {
     }
 
     closeGpay();
-    showSuccess(data.booking_ref, c);
+    // Use user_code from server response (most reliable) OR fallback to session value
+    showSuccess(data.booking_ref, data.user_code || USER_CODE, c);
 
-    // Mark slot as taken in local state
     if (!occupiedSlots[vehicleType]) occupiedSlots[vehicleType] = [];
     occupiedSlots[vehicleType].push(selectedSlot);
 
   } catch(e) {
     alert('Network error. Please try again.');
     confirmBtn.disabled = false;
-    confirmBtn.textContent = '✅ I\'ve Paid — Confirm Booking';
+    confirmBtn.textContent = "✅ I've Paid — Confirm Booking";
   }
 }
 
-function showSuccess(ref, c) {
-  document.getElementById('sucRef').textContent = ref;
-  document.getElementById('sucSlotId').textContent = selectedSlot;
-  document.getElementById('sucVehicle').textContent =
-    vehicleType === '4w' ? '4-Wheeler Bay' : '2-Wheeler Bay';
-
-  document.getElementById('sucStart').textContent = fmtTime(c.start);
-  document.getElementById('sucStartDate').textContent = fmtDate(c.start);
+function showSuccess(ref, userCode, c) {
+  document.getElementById('sucRef').textContent      = ref;
+  document.getElementById('sucUserCode').textContent = userCode;
+  document.getElementById('sucSlotId').textContent   = selectedSlot;
+  document.getElementById('sucVehicle').textContent  = vehicleType === '4w' ? '4-Wheeler Bay' : '2-Wheeler Bay';
+  document.getElementById('sucStart').textContent    = fmtTime(c.start);
+  document.getElementById('sucStartDate').textContent= fmtDate(c.start);
 
   if (endType === 'flexible') {
-    document.getElementById('sucEnd').textContent = 'Flexible';
+    document.getElementById('sucEnd').textContent     = 'Flexible';
     document.getElementById('sucEndDate').textContent = 'Exit within 24 hrs';
   } else {
-    document.getElementById('sucEnd').textContent = fmtTime(c.end);
+    document.getElementById('sucEnd').textContent     = fmtTime(c.end);
     document.getElementById('sucEndDate').textContent = fmtDate(c.end);
   }
-
-  document.getElementById('sucDuration').textContent =
-    endType === 'flexible' ? 'Up to 24 hrs' : c.hrs + (c.hrs === 1 ? ' hr' : ' hrs');
-
-  document.getElementById('sucAdv').textContent = '₹' + c.advance;
-  document.getElementById('sucNote').textContent =
-    c.total > c.advance
-      ? `Balance ₹${c.total - c.advance} to be settled at exit by guard.`
-      : 'Fully paid. No balance due at exit.';
+  document.getElementById('sucDuration').textContent = endType === 'flexible' ? 'Up to 24 hrs' : c.hrs + (c.hrs===1?' hr':' hrs');
+  document.getElementById('sucAdv').textContent      = '₹' + c.advance;
+  document.getElementById('sucNote').textContent     = c.total > c.advance
+    ? `Balance ₹${c.total - c.advance} settled at exit by guard.`
+    : 'Fully paid. No balance due at exit.';
 
   document.getElementById('successOverlay').classList.add('show');
 }
@@ -758,47 +624,39 @@ function resetAll() {
   document.getElementById('slotNone').style.display = 'block';
   document.getElementById('slotInfo').style.display  = 'none';
   document.getElementById('gpayConfirmBtn').disabled = false;
-  document.getElementById('gpayConfirmBtn').textContent = '✅ I\'ve Paid — Confirm Booking';
-
-  // Reload fresh from DB
+  document.getElementById('gpayConfirmBtn').textContent = "✅ I've Paid — Confirm Booking";
   loadOccupiedSlots();
   updateSummary();
 }
 
 function setDefaultTimes() {
-  const now   = new Date(); now.setSeconds(0, 0);
+  const now   = new Date(); now.setSeconds(0,0);
   const start = new Date(now.getTime() + 3600000);
   const end   = new Date(start.getTime() + 3600000);
-  const max   = new Date(start.getTime() + 24 * 3600000);
-
+  const max   = new Date(start.getTime() + 24*3600000);
   const si = document.getElementById('startTime');
   const ei = document.getElementById('endTime');
-  si.value = start.toISOString().slice(0, 16);
-  ei.value = end.toISOString().slice(0, 16);
-  ei.min   = start.toISOString().slice(0, 16);
-  ei.max   = max.toISOString().slice(0, 16);
+  si.value = start.toISOString().slice(0,16);
+  ei.value = end.toISOString().slice(0,16);
+  ei.min   = start.toISOString().slice(0,16);
+  ei.max   = max.toISOString().slice(0,16);
 }
 
-document.getElementById('startTime').addEventListener('change', function () {
-  const sv = this.value;
-  if (sv) {
-    const s   = new Date(sv);
-    const max = new Date(s.getTime() + 24 * 3600000);
-    const ei  = document.getElementById('endTime');
-    ei.min = sv;
-    ei.max = max.toISOString().slice(0, 16);
-    if (ei.value && new Date(ei.value) > max) ei.value = max.toISOString().slice(0, 16);
+document.getElementById('startTime').addEventListener('change', function(){
+  if(this.value){
+    const s=new Date(this.value),max=new Date(s.getTime()+24*3600000);
+    const ei=document.getElementById('endTime');
+    ei.min=this.value;
+    ei.max=max.toISOString().slice(0,16);
+    if(ei.value&&new Date(ei.value)>max) ei.value=max.toISOString().slice(0,16);
   }
   updateSummary();
 });
 document.getElementById('endTime').addEventListener('change', updateSummary);
-document.getElementById('gpayModal').addEventListener('click', function(e) {
-  if (e.target === this) closeGpay();
-});
+document.getElementById('gpayModal').addEventListener('click',function(e){if(e.target===this)closeGpay();});
 
-// ── INIT ──
 setDefaultTimes();
-loadOccupiedSlots();  // Fetches occupied from DB, then renders grid
+loadOccupiedSlots();
 </script>
 </body>
 </html>

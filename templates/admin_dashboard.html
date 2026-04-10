@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPark — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --accent:#f59e0b;
+  --accent2:#fbbf24;
+  --accentRed:#ef4444;
+  --accentGreen:#22c55e;
+  --accentBlue:#3b82f6;
+  --bg:#0c0f0a;
+  --card:#131710;
+  --card2:#1a1f16;
+  --text:#e8f0e0;
+  --muted:#6b7a5e;
+  --border:rgba(245,158,11,0.15);
+  --input-bg:rgba(8,14,6,0.9);
+}
+body{min-height:100vh;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);pointer-events:none;z-index:9999;}
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(245,158,11,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(245,158,11,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.bg-glow{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,0.06) 0%,transparent 65%);top:-200px;right:-200px;pointer-events:none;}
+
+/* HEADER */
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid var(--border);background:rgba(13,15,10,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:700;color:#000;font-size:16px;box-shadow:0 0 24px rgba(245,158,11,0.35);}
+.brand-name{font-family:'Bebas Neue';font-size:22px;letter-spacing:3px;color:var(--text);}
+.brand-name span{color:var(--accent2);}
+.admin-badge{font-size:9px;font-weight:700;letter-spacing:2px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:var(--accent2);padding:3px 9px;border-radius:20px;}
+.header-right{display:flex;align-items:center;gap:16px;}
+.live-dot{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--accentGreen);font-family:'Space Mono',monospace;letter-spacing:.5px;}
+.dot-pulse{width:7px;height:7px;border-radius:50%;background:var(--accentGreen);animation:pulse 1.8s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0.5);}50%{box-shadow:0 0 0 6px rgba(34,197,94,0);}}
+.logout-btn{padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+.logout-btn:hover{border-color:var(--accentRed);color:var(--accentRed);}
+
+main{max-width:920px;margin:0 auto;padding:40px 24px;}
+.section-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2.5px;color:var(--accent2);margin-bottom:8px;}
+
+/* SEARCH CARD */
+.search-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:32px;position:relative;overflow:hidden;}
+.search-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(245,158,11,0.4),transparent);}
+.search-title{font-family:'Bebas Neue';font-size:1.6rem;color:var(--text);letter-spacing:1.5px;margin-bottom:4px;}
+.search-sub{font-size:12px;color:var(--muted);margin-bottom:20px;}
+
+/* Search method tabs */
+.method-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.method-tab{padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.3px;}
+.method-tab.active{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.4);color:var(--accent2);}
+.method-tab:hover:not(.active){color:var(--text);border-color:rgba(245,158,11,0.2);}
+
+.search-row{display:flex;gap:12px;}
+.search-input-wrap{flex:1;position:relative;}
+.search-input-wrap input{width:100%;padding:13px 48px 13px 16px;border-radius:10px;border:1.5px solid var(--border);background:var(--input-bg);color:var(--text);font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1px;outline:none;transition:border-color .2s,box-shadow .2s;text-transform:uppercase;}
+.search-input-wrap input::placeholder{color:var(--muted);text-transform:none;font-family:'DM Sans',sans-serif;letter-spacing:0;}
+.search-input-wrap input:focus{border-color:rgba(245,158,11,0.45);box-shadow:0 0 0 3px rgba(245,158,11,0.08);}
+.search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;display:none;transition:color .2s;}
+.search-clear:hover{color:var(--accentRed);}
+.search-btn{padding:13px 28px;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;color:#000;font-weight:700;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;letter-spacing:.4px;transition:filter .15s,transform .15s;white-space:nowrap;position:relative;overflow:hidden;}
+.search-btn:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.search-btn:active{transform:scale(.98);}
+.search-btn.loading{pointer-events:none;color:transparent;}
+.search-btn.loading::after{content:'';position:absolute;width:15px;height:15px;top:50%;left:50%;margin:-7.5px 0 0 -7.5px;border:2px solid rgba(0,0,0,.25);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Hint bar */
+.hint-bar{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;}
+.hint-chip{font-size:10px;color:var(--muted);background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.1);padding:4px 10px;border-radius:5px;font-family:'Space Mono',monospace;letter-spacing:.5px;}
+.hint-chip strong{color:var(--accent2);}
+
+.toast{margin-top:14px;padding:10px 14px;border-radius:9px;font-size:12px;font-weight:500;display:none;}
+.toast.error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#fca5a5;}
+.toast.show{display:flex;align-items:center;gap:8px;}
+.toast-dot{width:6px;height:6px;border-radius:50%;background:#ef4444;flex-shrink:0;}
+
+/* RESULT */
+#resultPanel{display:none;animation:slideIn .4s cubic-bezier(0.22,1,0.36,1);}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* USER CODE BANNER */
+.uc-banner{
+  background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(245,158,11,0.04));
+  border:1px solid rgba(245,158,11,0.3);
+  border-radius:12px;
+  padding:16px 22px;
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:20px;
+}
+.uc-banner-label{font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(245,158,11,0.6);font-family:'Space Mono',monospace;margin-bottom:4px;}
+.uc-banner-val{font-family:'Bebas Neue';font-size:2rem;color:#fbbf24;letter-spacing:3px;line-height:1;}
+.uc-banner-sep{width:1px;height:40px;background:rgba(245,158,11,0.2);}
+.uc-banner-name{font-size:14px;color:var(--text);font-weight:600;}
+.uc-banner-email{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* Info grid */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:24px;}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden;transition:border-color .2s;}
+.info-card:hover{border-color:rgba(245,158,11,0.3);}
+.info-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(245,158,11,0.2),transparent);}
+.info-card.highlight::after{background:linear-gradient(90deg,transparent,rgba(245,158,11,0.5),transparent);}
+.ic-label{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:8px;font-family:'Space Mono',monospace;}
+.ic-value{font-size:13px;color:var(--text);word-break:break-all;line-height:1.3;}
+.ic-value.big{font-family:'Bebas Neue';font-size:22px;color:var(--accent2);}
+.ic-value.mono{font-family:'Space Mono',monospace;font-size:12px;}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 9px;border-radius:5px;font-family:'Space Mono',monospace;}
+.badge.active{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.2);}
+.badge.fixed{background:rgba(59,130,246,0.12);color:#93c5fd;border:1px solid rgba(59,130,246,0.2);}
+.badge.flexible{background:rgba(168,85,247,0.12);color:#d8b4fe;border:1px solid rgba(168,85,247,0.2);}
+
+/* Amount section */
+.amount-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:24px;position:relative;overflow:hidden;}
+.amount-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(245,158,11,0.5),transparent);}
+.amount-title{font-family:'Bebas Neue';font-size:1.2rem;letter-spacing:2px;color:var(--text);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.amount-title .ticker{width:8px;height:8px;border-radius:50%;background:var(--accent2);animation:pulse 1.5s ease infinite;}
+.amount-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+@media(max-width:600px){.amount-grid{grid-template-columns:1fr;}}
+.amount-box{background:var(--card2);border-radius:10px;padding:18px 20px;border:1px solid var(--border);text-align:center;}
+.ab-label{font-size:9px;letter-spacing:2px;color:var(--muted);font-family:'Space Mono',monospace;font-weight:700;margin-bottom:10px;}
+.ab-value{font-family:'Space Mono',monospace;font-size:26px;font-weight:700;line-height:1;}
+.amount-box.total .ab-value{color:var(--accent2);}
+.amount-box.paid  .ab-value{color:var(--accentGreen);}
+.amount-box.due   .ab-value{color:var(--accentRed);}
+.rupee{font-size:18px;vertical-align:top;margin-top:3px;display:inline-block;}
+.timer-row{display:flex;align-items:center;gap:12px;margin-top:16px;padding:12px 16px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.1);border-radius:8px;}
+.timer-label{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:1px;}
+.timer-value{font-family:'Space Mono',monospace;font-size:13px;color:var(--accent2);margin-left:auto;}
+.rate-badge{font-size:10px;color:var(--muted);background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.12);padding:3px 9px;border-radius:5px;font-family:'Space Mono',monospace;}
+
+/* Checkout */
+.checkout-btn{width:100%;padding:14px;border-radius:10px;border:1px solid rgba(239,68,68,0.3);background:rgba(239,68,68,0.08);color:#fca5a5;font-weight:700;font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;letter-spacing:.4px;transition:all .2s;position:relative;overflow:hidden;}
+.checkout-btn:hover{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.5);color:#fff;}
+.checkout-btn.loading{pointer-events:none;color:transparent;}
+.checkout-btn.loading::after{content:'';position:absolute;width:16px;height:16px;top:50%;left:50%;margin:-8px 0 0 -8px;border:2px solid rgba(252,165,165,.3);border-top-color:#fca5a5;border-radius:50%;animation:spin .7s linear infinite;}
+.checkout-btn.done{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.3);color:#4ade80;cursor:default;}
+
+/* Empty state */
+.empty-state{text-align:center;padding:60px 20px;animation:slideIn .4s cubic-bezier(0.22,1,0.36,1);}
+.empty-icon{font-size:48px;margin-bottom:16px;opacity:.5;}
+.empty-title{font-family:'Bebas Neue';font-size:1.4rem;color:var(--muted);letter-spacing:1px;}
+.empty-sub{font-size:13px;color:var(--muted);margin-top:6px;opacity:.7;}
+
+.divider{height:1px;background:var(--border);margin:24px 0;}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<header>
+  <div class="brand">
+    <div class="brand-icon">P</div>
+    <div class="brand-name">SMART<span>PARK</span></div>
+    <span class="admin-badge">ADMIN</span>
+  </div>
+  <div class="header-right">
+    <div class="live-dot">
+      <span class="dot-pulse"></span>
+      <span id="liveClock">--:--:--</span>
+    </div>
+    <button class="logout-btn" onclick="window.location='/logout'">LOGOUT</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- Search Card -->
+  <div class="search-card">
+    <p class="section-label">// BOOKING LOOKUP</p>
+    <h2 class="search-title">FIND A BOOKING</h2>
+    <p class="search-sub">Search by the user's <strong style="color:var(--accent2)">User ID</strong> printed on their slip (e.g. USR-4821), or by Booking Ref, or by Slot ID</p>
+
+    <!-- Method hint tabs (visual only) -->
+    <div class="method-tabs">
+      <div class="method-tab active">👤 User ID (USR-XXXX)</div>
+      <div class="method-tab">🎫 Booking Ref (SP…)</div>
+      <div class="method-tab">🅿️ Slot ID (A3)</div>
+    </div>
+
+    <div class="search-row">
+      <div class="search-input-wrap">
+        <input type="text" id="searchInput" placeholder="e.g. USR-4821  or  SPAB12CD  or  A3"
+               maxlength="30" oninput="onInput()" onkeydown="if(event.key==='Enter')doSearch()">
+        <button class="search-clear" id="clearBtn" onclick="clearSearch()">✕</button>
+      </div>
+      <button class="search-btn" id="searchBtn" onclick="doSearch()">🔍 SEARCH</button>
+    </div>
+
+    <div class="hint-bar">
+      <div class="hint-chip"><strong>USR-4821</strong> ← User ID from slip</div>
+      <div class="hint-chip"><strong>SP4A1BC2</strong> ← Booking reference</div>
+      <div class="hint-chip"><strong>A3</strong> ← Slot ID</div>
+    </div>
+
+    <div class="toast error" id="errorToast">
+      <div class="toast-dot"></div>
+      <span id="errorMsg">Error</span>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">🅿️</div>
+    <div class="empty-title">AWAITING QUERY</div>
+    <div class="empty-sub">Enter a User ID, Booking Ref, or Slot ID to see live billing details</div>
+  </div>
+
+  <!-- Result Panel -->
+  <div id="resultPanel">
+
+    <!-- User Code Banner -->
+    <div class="uc-banner" id="ucBanner">
+      <div>
+        <div class="uc-banner-label">USER ID</div>
+        <div class="uc-banner-val" id="bannerUserCode">—</div>
+      </div>
+      <div class="uc-banner-sep"></div>
+      <div>
+        <div class="uc-banner-name" id="bannerName">—</div>
+        <div class="uc-banner-email" id="bannerEmail">—</div>
+      </div>
+    </div>
+
+    <p class="section-label">// BOOKING DETAILS</p>
+    <div class="info-grid" id="infoGrid"></div>
+
+    <div class="divider"></div>
+
+    <!-- Live Billing -->
+    <div class="amount-section">
+      <div class="amount-title">
+        <span class="ticker"></span>
+        LIVE BILLING
+      </div>
+      <div class="amount-grid">
+        <div class="amount-box total">
+          <div class="ab-label">TOTAL ACCRUED</div>
+          <div class="ab-value"><span class="rupee">₹</span><span id="totalAmt">0</span></div>
+        </div>
+        <div class="amount-box paid">
+          <div class="ab-label">ADVANCE PAID</div>
+          <div class="ab-value"><span class="rupee">₹</span><span id="paidAmt">0</span></div>
+        </div>
+        <div class="amount-box due">
+          <div class="ab-label">REMAINING DUE</div>
+          <div class="ab-value"><span class="rupee">₹</span><span id="dueAmt">0</span></div>
+        </div>
+      </div>
+      <div class="timer-row">
+        <span class="timer-label">TIME PARKED</span>
+        <span class="rate-badge">₹<span id="rateDisplay">10</span>/hr</span>
+        <span class="timer-value" id="durationDisplay">0h 0m 0s</span>
+      </div>
+    </div>
+
+    <button class="checkout-btn" id="checkoutBtn" onclick="doCheckout()">
+      CHECKOUT &amp; CLOSE BOOKING
+    </button>
+  </div>
+
+</main>
+
+<script>
+// Live clock
+function updateClock(){
+  document.getElementById('liveClock').textContent = new Date().toTimeString().split(' ')[0];
+}
+setInterval(updateClock,1000); updateClock();
+
+let currentBooking = null;
+let tickInterval   = null;
+
+function onInput(){
+  const v = document.getElementById('searchInput').value;
+  document.getElementById('clearBtn').style.display = v ? 'block' : 'none';
+  document.getElementById('errorToast').classList.remove('show');
+}
+
+function clearSearch(){
+  document.getElementById('searchInput').value = '';
+  document.getElementById('clearBtn').style.display = 'none';
+  document.getElementById('errorToast').classList.remove('show');
+  hideResult();
+  document.getElementById('emptyState').style.display = 'block';
+}
+
+async function doSearch(){
+  const q = document.getElementById('searchInput').value.trim();
+  if(!q) return;
+  const btn = document.getElementById('searchBtn');
+  btn.classList.add('loading');
+  document.getElementById('errorToast').classList.remove('show');
+
+  try {
+    const res  = await fetch(`/api/admin/booking-details?q=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    if(!res.ok){ showError(data.error || 'Booking not found'); hideResult(); }
+    else        { renderResult(data); }
+  } catch(e){
+    showError('Network error. Please try again.'); hideResult();
+  } finally {
+    btn.classList.remove('loading');
+  }
+}
+
+function showError(msg){
+  document.getElementById('errorMsg').textContent = msg;
+  document.getElementById('errorToast').classList.add('show');
+}
+
+function hideResult(){
+  document.getElementById('resultPanel').style.display = 'none';
+  if(tickInterval){ clearInterval(tickInterval); tickInterval = null; }
+}
+
+function renderResult(data){
+  currentBooking = data;
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('resultPanel').style.display = 'block';
+
+  // Reset checkout btn
+  const cb = document.getElementById('checkoutBtn');
+  cb.classList.remove('done','loading');
+  cb.textContent = 'CHECKOUT & CLOSE BOOKING';
+
+  // User code banner
+  document.getElementById('bannerUserCode').textContent = data.user_code || '—';
+  document.getElementById('bannerName').textContent     = data.user_name;
+  document.getElementById('bannerEmail').textContent    = data.user_email;
+
+  // Info cards
+  const startDt = new Date(data.start_time);
+  const endDt   = data.end_time ? new Date(data.end_time) : null;
+
+  const cards = [
+    { label:'BOOKING REF',   value: data.booking_ref,   cls:'mono', highlight:true },
+    { label:'SLOT ID',       value: data.slot_id,        cls:'big' },
+    { label:'VEHICLE TYPE',  value: data.vehicle_type === '4w' ? '🚗 4-Wheeler' : '🛵 2-Wheeler', cls:'' },
+    { label:'STATUS',        value: '<span class="badge active">● ACTIVE</span>', cls:'' },
+    { label:'BOOKING TYPE',  value: `<span class="badge ${data.end_type}">${data.end_type.toUpperCase()}</span>`, cls:'' },
+    { label:'START TIME',    value: fmtDt(startDt),      cls:'mono' },
+    { label:'SCHEDULED END', value: endDt ? fmtDt(endDt) : '<span style="color:var(--muted)">Flexible</span>', cls:'mono' },
+  ];
+
+  document.getElementById('infoGrid').innerHTML = cards.map(c=>`
+    <div class="info-card${c.highlight?' highlight':''}">
+      <div class="ic-label">${c.label}</div>
+      <div class="ic-value ${c.cls}">${c.value}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('paidAmt').textContent   = data.advance_paid;
+  document.getElementById('rateDisplay').textContent = data.rate_per_hour;
+
+  if(tickInterval) clearInterval(tickInterval);
+  tickLive(data);
+  tickInterval = setInterval(()=>tickLive(data), 1000);
+}
+
+function tickLive(data){
+  const startTime = new Date(data.start_time);
+  const now       = new Date();
+  const diffSec   = Math.max((now - startTime)/1000, 0);
+  const diffHr    = diffSec/3600;
+  const total     = diffHr * data.rate_per_hour;
+  const remaining = Math.max(total - data.advance_paid, 0);
+
+  document.getElementById('totalAmt').textContent = total.toFixed(2);
+  document.getElementById('dueAmt').textContent   = remaining.toFixed(2);
+
+  const h=Math.floor(diffSec/3600), m=Math.floor((diffSec%3600)/60), s=Math.floor(diffSec%60);
+  document.getElementById('durationDisplay').textContent = `${h}h ${m}m ${s}s`;
+}
+
+async function doCheckout(){
+  if(!currentBooking) return;
+  if(!confirm(`Checkout booking ${currentBooking.booking_ref} for user ${currentBooking.user_code}?`)) return;
+  const btn = document.getElementById('checkoutBtn');
+  btn.classList.add('loading');
+  try {
+    const res  = await fetch('/api/admin/checkout',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({booking_ref:currentBooking.booking_ref})
+    });
+    const data = await res.json();
+    if(res.ok){
+      if(tickInterval){ clearInterval(tickInterval); tickInterval=null; }
+      btn.classList.remove('loading'); btn.classList.add('done');
+      btn.textContent = '✓ CHECKED OUT SUCCESSFULLY';
+    } else {
+      btn.classList.remove('loading'); showError(data.error||'Checkout failed');
+    }
+  } catch(e){
+    btn.classList.remove('loading'); showError('Network error during checkout');
+  }
+}
+
+function fmtDt(dt){
+  return dt.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
+}
+</script>
+</body>
+</html>
