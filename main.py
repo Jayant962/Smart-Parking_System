@@ -33,11 +33,50 @@ def generate_user_code():
             return code
 
 
+def send_booking_email(user, booking, vehicle_type, start_time, end_time, end_type, advance, ref):
+    sender_email = os.environ.get("MAIL_USER")
+    sender_pass  = os.environ.get("MAIL_PASS")
+    if not sender_email or not sender_pass:
+        return
+
+    vehicle_label = "4-Wheeler" if vehicle_type == "4w" else "2-Wheeler"
+    start_fmt = start_time.strftime("%d %b %Y, %I:%M %p")
+    end_fmt   = "Flexible (exit within 24 hrs)" if end_type == "flexible" or not end_time else end_time.strftime("%d %b %Y, %I:%M %p")
+
+    body = f"""Hi {user.name},
+
+Your SmartPark booking is confirmed!
+
+  Booking Ref : {ref}
+  User ID     : {user.user_code}
+  Slot        : {booking.slot_id}
+  Vehicle     : {vehicle_label}
+  Start       : {start_fmt}
+  End         : {end_fmt}
+  Advance Paid: Rs.{advance}
+
+Show your User ID ({user.user_code}) to the guard on entry & exit.
+Balance will be settled at exit based on actual hours parked.
+
+— SmartPark Team
+"""
+
+    msg = MIMEMultipart()
+    msg["Subject"] = f"SmartPark Booking Confirmed — {ref}"
+    msg["From"]    = sender_email
+    msg["To"]      = user.email
+    msg.attach(MIMEText(body, "plain"))
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(sender_email, sender_pass)
+        server.sendmail(sender_email, user.email, msg.as_string())
+
+
 # ── MODELS ──
 
 class User(db.Model):
     id        = db.Column(db.Integer, primary_key=True)
-    user_code = db.Column(db.String(10), unique=True, nullable=False)   # e.g. USR-4821
+    user_code = db.Column(db.String(10), unique=True, nullable=False)
     name      = db.Column(db.String(100), nullable=False)
     email     = db.Column(db.String(100), unique=True, nullable=False)
     password  = db.Column(db.String(100), nullable=False)
@@ -94,7 +133,6 @@ def login():
         email    = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
 
-        # Admin check
         if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
             session['is_admin'] = True
             return redirect("/admin")
@@ -173,21 +211,21 @@ def admin_booking_details():
     remaining     = max(round(total_amount - booking.advance_paid, 2), 0)
 
     return jsonify({
-        "booking_ref":     booking.booking_ref,
-        "slot_id":         booking.slot_id,
-        "vehicle_type":    booking.vehicle_type,
-        "user_code":       user.user_code if user else "—",
-        "user_name":       user.name if user else "Unknown",
-        "user_email":      user.email if user else "Unknown",
-        "start_time":      booking.start_time.isoformat(),
-        "end_time":        booking.end_time.isoformat() if booking.end_time else None,
-        "end_type":        booking.end_type,
-        "advance_paid":    booking.advance_paid,
-        "rate_per_hour":   RATE_PER_HOUR,
-        "hours_parked":    round(hours_parked, 4),
-        "total_amount":    total_amount,
+        "booking_ref":      booking.booking_ref,
+        "slot_id":          booking.slot_id,
+        "vehicle_type":     booking.vehicle_type,
+        "user_code":        user.user_code if user else "—",
+        "user_name":        user.name if user else "Unknown",
+        "user_email":       user.email if user else "Unknown",
+        "start_time":       booking.start_time.isoformat(),
+        "end_time":         booking.end_time.isoformat() if booking.end_time else None,
+        "end_type":         booking.end_type,
+        "advance_paid":     booking.advance_paid,
+        "rate_per_hour":    RATE_PER_HOUR,
+        "hours_parked":     round(hours_parked, 4),
+        "total_amount":     total_amount,
         "remaining_amount": remaining,
-        "server_time":     now.isoformat()
+        "server_time":      now.isoformat()
     })
 
 
@@ -308,8 +346,14 @@ def book_slot():
     db.session.add(new_booking)
     db.session.commit()
 
-    # Return user_code too so frontend can show on slip
     user = User.query.get(session['user_id'])
+
+    # ── Send booking slip email (non-fatal) ──
+    try:
+        send_booking_email(user, new_booking, vehicle_type, start_time, end_time, end_type, advance, ref)
+    except Exception as e:
+        print(f"[Email] Failed to send booking slip: {e}")
+
     return jsonify({"success": True, "booking_ref": ref, "user_code": user.user_code if user else ""})
 
 
